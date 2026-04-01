@@ -1,5 +1,6 @@
 # refugio_de_mascotas
-1. Definición del Proyecto: "PetShelter Manager"
+1. Definición del Proyecto: "Refugio de Mascotas
+   
 ● Qué aplicación voy a hacer
 
 Un sistema híbrido compuesto por:
@@ -30,6 +31,7 @@ Gestión de stock: Calcula automáticamente cuántos kilos de pienso se necesita
 
 Visibilidad: Ayuda a que los animales lleven menos tiempo en la protectora al tener una web atractiva que facilite la adopción.
 
+
 2. Conexión con los Módulos (Tu defensa del proyecto)
 🐾 Programación (Java / Web)
 
@@ -51,15 +53,14 @@ Stock_Comida (Tipo_Pienso, cantidad_actual, alerta_minimo).
 
 📈 Itinerario de Empleabilidad (Estadísticas y Futuro)
 
-La "Estimación de entradas": Puedes usar una lógica de programación que analice los datos históricos (ej: en verano suelen entrar más animales) para prever gastos de comida y espacio. Esto demuestra una mentalidad de análisis de datos muy valorada en empresas.
+La "Estimación de entradas": usar una lógica de programación que analice los datos históricos (ej: en verano suelen entrar más animales) para prever gastos de comida y espacio.
 
-3. ¿Cómo lo dividimos para que no te abrume?
-Para que sea "realista", te sugiero este enfoque de desarrollo profesional:
+3. ¿Cómo lo dividimos el proyecto?
 
-MVP (Producto Mínimo Viable): Primero programa que se pueda añadir un animal y ver su ficha.
+MVP (Producto Mínimo Viable): Primero programra que se pueda añadir un animal y ver su ficha.
 
-Segunda Iteración: Añade la gestión de vacunas y tratamientos.
+Segunda Iteración: Añadir la gestión de vacunas y tratamientos.
 
-Tercera Iteración: Añade el cálculo automático de comida (la parte de "gestión").
+Tercera Iteración: Añadir el cálculo automático de comida (la parte de "gestión").
 
-Final: Maqueta la web pública usando lo que ya sabes de HTML/CSS/Grid.
+Final: Maquetar la web pública usando lo que ya sabes de HTML/CSS/Grid.
