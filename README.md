@@ -64,3 +64,61 @@ Segunda Iteración: Añadir la gestión de vacunas y tratamientos.
 Tercera Iteración: Añadir el cálculo automático de comida (la parte de "gestión").
 
 Final: Maquetar la web pública usando lo que ya sabes de HTML/CSS/Grid.
+
+Para comenzar con el proyecto, empezamos planteando los requisitos iniciales
+
+1. Requisitos Funcionales (Lo que la App "HACE")
+Para que no te pierdas, vamos a dividirlo por los "actores" (perfiles de usuario) que mencionaste:
+
+A. Perfil Público (Adoptante)
+
+Visualización de catálogo: Ver fotos y fichas básicas de animales (nombre, edad aproximada, especie, sexo).
+
+Filtros de búsqueda: Buscar por tamaño (pequeño/mediano/grande) o edad (cachorro/adulto/senior).
+
+Formulario de interés: Enviar una solicitud de contacto para un animal específico.
+
+B. Perfil Cuidador/Veterinario (Gestión Interna)
+
+Gestión de Fichas: Alta, baja y modificación de animales (incluyendo peso y fecha de entrada).
+
+Control Sanitario: Registro de vacunas puestas y calendario de próximas dosis.
+
+Tratamientos activos: Listado de animales que necesitan medicación hoy (ej: "Tobby - 1 pastilla de desparasitante").
+
+Cálculo de suministros: Pantalla que sume el peso de todos los perros y calcule los kg de pienso necesarios (ej: PesoTotal×0.02=KgDiarios).
+
+C. Perfil Administrador
+
+Gestión de Usuarios: Crear cuentas para nuevos voluntarios o veterinarios.
+
+Estadísticas: Gráficas de "Animales adoptados vs. Animales en espera" y estimación de ocupación para los próximos meses.
+
+2. Requisitos No Funcionales (Cómo es la App)
+Persistencia: Los datos deben guardarse en una base de datos SQL (no se pueden perder si se apaga el PC).
+
+Seguridad: El panel de gestión debe requerir usuario y contraseña. El adoptante solo ve la web pública.
+
+Interfaz: Debe ser intuitiva (usabilidad) para que un voluntario que no sepa de informática pueda usarla rápido.
+
+3. Diagrama de Casos de Uso (Simplificado)
+Este diagrama es el que presentarás en tu documentación para explicar quién interactúa con qué.
+
+Actor Adoptante → Consultar Animales, Enviar Solicitud.
+
+Actor Veterinario → Gestionar Vacunas, Actualizar Peso, Registrar Tratamiento.
+
+Actor Administrador → Generar Informes de Comida, Gestionar Personal.
+
+4. Gestión de Datos: El primer "Boceto" de la BD
+Para tu entrega de Bases de Datos, ya puedes ir pensando en estas entidades principales:
+
+Tabla ANIMAL: (ID, Nombre, Especie, Raza, Peso, Fecha_Entrada, Estado).
+
+Tabla TRATAMIENTO: (ID, Nombre_Medicina, Dosis, Frecuencia).
+
+Tabla FICHA_MEDICA: (ID_Animal, ID_Tratamiento, Fecha_Inicio, Fecha_Fin).
+
+Tabla ADOPCIONES: (ID_Animal, Nombre_Adoptante, Fecha_Adopcion, Telefono).
+
+
