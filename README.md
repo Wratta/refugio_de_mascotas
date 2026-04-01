@@ -121,4 +121,47 @@ Tabla FICHA_MEDICA: (ID_Animal, ID_Tratamiento, Fecha_Inicio, Fecha_Fin).
 
 Tabla ADOPCIONES: (ID_Animal, Nombre_Adoptante, Fecha_Adopcion, Telefono).
 
+En España, con la entrada en vigor de la Ley 7/2023 de Protección de los Derechos y el Bienestar de los Animales (la famosa Ley de Bienestar Animal).
+
+Actualización de los requisitos integrando la ley española:
+
+1. Nuevos Requisitos Funcionales (Legales)
+
+A. Gestión de Esterilización (Obligatorio por Ley)
+
+La ley exige que todos los animales que se entreguen en adopción estén esterilizados (o con compromiso de ello si son cachorros).
+
+Campo en BBDD: estado_esterilizacion (Booleano) y fecha_intervencion.
+
+Alerta: El sistema no debe permitir marcar un animal como "Listo para adoptar" si no tiene check en esterilización.
+
+B. Seguro de Responsabilidad Civil
+
+Aunque el seguro obligatorio para todos los perros está en fase de desarrollo reglamentario, la ley lo exige.
+
+Gestión: La ficha del animal debe incluir si el perro (especialmente si es de manejo especial o según su peso/raza) requiere que el adoptante presente el seguro de responsabilidad civil antes de la firma.
+
+Documentación: Espacio para subir el PDF de la póliza asociada al microchip.
+
+C. Identificación y Microchip
+
+Obligatorio: Ningún animal puede salir sin identificación. El sistema debe validar que el campo num_microchip tiene el formato correcto (15 dígitos en España).
+
+2. Actualización del Perfil de Usuario: El Adoptante
+
+La ley introduce el concepto de "Curso de formación para la tenencia de perros".
+
+Requisito de Perfil: En el formulario de adopción de la web, ahora debemos incluir un check o un campo para adjuntar el certificado del curso de formación (cuando sea plenamente vigente).
+
+Validación: El sistema debe comprobar que el adoptante es mayor de edad y no tiene antecedentes por maltrato animal (declaración responsable).
+
+3. Impacto en la Base de Datos (Tablas Legales)
+
+Añadimos estos campos por imperativo legal:
+
+Tabla	Campo Nuevo	Razón Legal
+Animales	es_potencialmente_peligroso	Gestión de licencias específicas (aunque la ley nacional tienda a unificarlos, sigue habiendo registros autonómicos).
+Animales	fecha_esterilizacion	Art. 26 de la Ley 7/2023 (Obligatorio).
+Adopciones	dni_titular	Identificación en el Registro Nacional de Animales de Compañía.
+Adopciones	contrato_adopcion_pdf	Documento legal obligatorio con cláusulas de no maltrato.
 
