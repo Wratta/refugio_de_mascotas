@@ -165,3 +165,4 @@ Animales	fecha_esterilizacion	Art. 26 de la Ley 7/2023 (Obligatorio).
 Adopciones	dni_titular	Identificación en el Registro Nacional de Animales de Compañía.
 Adopciones	contrato_adopcion_pdf	Documento legal obligatorio con cláusulas de no maltrato.
 
+Empezamos a trabajar en Java, para programar las clases Animal y TipoAnimal, que son las bases de nuestro proyecto.
