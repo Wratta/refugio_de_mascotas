@@ -12,13 +12,14 @@ public class Animal {
     private LocalDate fechaUltimaRabia;
     private TipoAnimal especie; // Enum: PERRO, GATO
 
-    // Método para calcular la ración diaria (Lógica de Negocio)
+    public Animal(String nombre, double peso, TipoAnimal especie) {
+        this.nombre = nombre;
+        this.peso = peso;
+        this.especie = especie;
+    }
+    // Metodo para calcular la ración diaria (Lógica de Negocio)
     public double calcularRacionDiaria() {
-        if (especie == TipoAnimal.PERRO) {
-            return this.peso * 0.02; // 2% de su peso corporal aprox.
-        } else {
-            return this.peso * 0.015; // Los gatos tienen otro ratio
-        }
+        return this.peso * especie.getFactorComida();
     }
 
     // Lógica de Alerta de Rabia
@@ -46,5 +47,8 @@ public class Animal {
         // Getters para usar en los cálculos
         public String getDescripcion() { return descripcion; }
         public double getFactorComida() { return factorComida; }
+        public TipoAnimal getEspecie() { return this.especie }
+        public void setEspecie(TipoAnimal especie) { this.especie = especie; }
+    }
     }
 }
