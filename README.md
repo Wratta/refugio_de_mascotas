@@ -166,3 +166,9 @@ Adopciones	dni_titular	Identificación en el Registro Nacional de Animales de Co
 Adopciones	contrato_adopcion_pdf	Documento legal obligatorio con cláusulas de no maltrato.
 
 Empezamos a trabajar en Java, para programar las clases Animal y TipoAnimal, que son las bases de nuestro proyecto.
+
+Hemos añadido la clase adoptante, el AnimalDao (que se encarga de gestionar la BBDD junto con la ConexionDB, que tiene el usuario y contraseña), y mejoramos la clase Main con un Menú.
+
+En la clase Main, trabajo ahora en ver un listado de los animales en la BBDD.
+
+En la siguiente fase, registraremos un Adoptante, y mejoraremos esta clase.
