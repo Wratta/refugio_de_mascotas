@@ -4,6 +4,8 @@ import model.Animal;
 import dao.AnimalDAO;
 import model.TipoAnimal;
 
+import java.util.List;
+
 public class AnimalController {
     private AnimalDAO animalDAO = new AnimalDAO();
 
@@ -20,5 +22,8 @@ public class AnimalController {
         } catch (IllegalArgumentException e) {
             System.out.println("Error: La especie '" + especieTexto + "' no es válida.");
         }
+    }
+    public List<Animal> listarAnimales() {
+        return animalDAO.obtenerTodos();
     }
 }
