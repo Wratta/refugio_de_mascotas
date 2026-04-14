@@ -1,9 +1,7 @@
-# bases de datos
-1. Creamos la base de datos, para luego conectarla a java.
 CREATE DATABASE IF NOT EXISTS refugio_mascotas;
 USE refugio_mascotas;
 
--- 1. Tabla de Adoptantes
+-- 1. Tabla de Adoptantes (Primero esta, porque Animales depende de ella)
 CREATE TABLE adoptantes (
     dni VARCHAR(12) PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
