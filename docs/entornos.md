@@ -126,3 +126,11 @@ PROYECTO_PROTECTORA/
     └── diccionario_datos.md
     ├── der_diagram.md
     └── script_creacion.sql
+
+Integridad Referencial
+
+Protección de Datos: Se impide la eliminación de registros "huérfanos". Si un animal está vinculado a un adoptante, borrarlo causaría un error de consistencia en el historial de la protectora.
+
+Lógica de Negocio: El sistema diferencia entre "Baja por error de entrada" (permitida) y "Baja administrativa" (restringida si hay contratos activos).
+
+Simulación de SQL: Este comportamiento imita la cláusula ON DELETE RESTRICT que definiríamos en una base de datos MySQL profesional.

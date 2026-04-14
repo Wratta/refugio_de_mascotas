@@ -5,8 +5,8 @@
 
 // 1. "Base de datos" temporal en memoria
 let censoAnimales = [
-    { nombre: "Toby", microchip: "123456789012345", especie: "PERRO", peso: 12.5 },
-    { nombre: "Luna", microchip: "987654321098765", especie: "GATO", peso: 4.2 }
+    { nombre: "Toby", microchip: "123456789012345", especie: "PERRO", peso: 12.5, idAdoptante: null },
+    { nombre: "Luna", microchip: "987654321098765", especie: "GATO", peso: 4.2, idAdoptante: "AD-772" }
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -121,19 +121,22 @@ function actualizarTabla(lista) {
             <tbody>`;
 
     lista.forEach(animal => {
-        html += `
-            <tr>
-                <td>${animal.nombre}</td>
-                <td>${animal.microchip}</td>
-                <td>${animal.especie}</td>
-                <td>${animal.peso.toFixed(2)}</td>
-                <td>
-                    <button class="btn-delete" onclick="eliminarAnimal('${animal.microchip}')">
-                        Eliminar
-                    </button>
-                </td>
-            </tr>`;
-    });
+    const estado = animal.idAdoptante ? "Adoptado" : "Disponible";
+    
+    html += `
+        <tr>
+            <td>${animal.nombre}</td>
+            <td>${animal.microchip}</td>
+            <td>${animal.especie}</td>
+            <td>${animal.peso.toFixed(2)} kg</td>
+            <td>${estado}</td>
+            <td>
+                <button class="btn-delete" onclick="eliminarAnimal('${animal.microchip}')">
+                    Eliminar
+                </button>
+            </td>
+        </tr>`;
+});
 
     html += `</tbody></table>`;
     contenedor.innerHTML = html;
@@ -143,16 +146,25 @@ function actualizarTabla(lista) {
  * Elimina un animal del censo mediante su microchip
  */
 function eliminarAnimal(microchip) {
-    // Confirmación de seguridad
-    const confirmar = confirm(`¿Estás seguro de que deseas eliminar el registro con microchip ${microchip}?`);
+    // Buscamos al animal para comprobar su estado de adopción
+    const animal = censoAnimales.find(a => a.microchip === microchip);
+
+    if (!animal) return;
+
+    // Simulación de Restricción de Clave Foránea (Foreign Key)
+    if (animal.idAdoptante !== null && animal.idAdoptante !== "") {
+        alert(`Error de Integridad: No se puede eliminar a ${animal.nombre}.\n` +
+              `Causa: El animal ya cuenta con un contrato de adopción vinculado (ID: ${animal.idAdoptante}).\n` +
+              `Debe anular primero la adopción para dar de baja el registro.`);
+        return;
+    }
+
+    // Si no tiene adoptante, procedemos con el borrado normal
+    const confirmar = confirm(`¿Estás seguro de que deseas eliminar el registro de ${animal.nombre}?`);
     
     if (confirmar) {
-        // Filtramos el censo para mantener todos menos el que coincide con el microchip
-        censoAnimales = censoAnimales.filter(animal => animal.microchip !== microchip);
-        
-        // Refrescamos la tabla para que el cambio sea visible
+        censoAnimales = censoAnimales.filter(a => a.microchip !== microchip);
         actualizarTabla(censoAnimales);
-        
-        console.log("Registro eliminado. Nuevo censo:", censoAnimales);
+        console.log("Baja procesada correctamente.");
     }
 }
