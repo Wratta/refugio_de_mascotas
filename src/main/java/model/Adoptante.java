@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Adoptante {
     private String dni; // Identificador legal obligatorio
     private String nombre;

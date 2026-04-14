@@ -2,29 +2,32 @@ package dao;
 
 import model.Animal;
 import model.TipoAnimal;
-
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AnimalDAO {
 
     public void guardarAnimal(Animal animal) {
-        String sql = "INSERT INTO animales (nombre, especie, peso) VALUES (?, ?, ?)";
+        // Añadimos 'microchip' a la consulta SQL
+        String sql = "INSERT INTO animales (nombre, microchip, especie, peso) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = dao.ConexionDB.getConexion();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, animal.getNombre());
-            pstmt.setString(2, animal.getEspecie().toString());
-            pstmt.setDouble(3, animal.getPeso());
+            pstmt.setString(2, animal.getMicrochip()); // <-- Nuevo campo legal
+            pstmt.setString(3, animal.getEspecie().toString());
+            pstmt.setDouble(4, animal.getPeso());
 
             pstmt.executeUpdate();
-            System.out.println("¡Animal guardado con éxito!");
+            System.out.println("¡Animal " + animal.getNombre() + " registrado con microchip " + animal.getMicrochip() + "!");
 
         } catch (SQLException e) {
-            System.out.println("Error al guardar: " + e.getMessage());
+            System.out.println("Error de persistencia: " + e.getMessage());
         }
     }
+
     public List<Animal> obtenerTodos() {
         List<Animal> lista = new ArrayList<>();
         String sql = "SELECT * FROM animales";
@@ -35,10 +38,12 @@ public class AnimalDAO {
 
             while (rs.next()) {
                 Animal a = new Animal();
+                a.setId(rs.getString("id_animal"));
                 a.setNombre(rs.getString("nombre"));
+                a.setMicrochip(rs.getString("microchip")); // Recogemos el microchip
                 a.setPeso(rs.getDouble("peso"));
-                // Convertimos el String de la DB al Enum de Java
                 a.setEspecie(TipoAnimal.valueOf(rs.getString("especie")));
+                a.setIdAdoptante(rs.getString("id_adoptante")); // FK hacia adoptante
 
                 lista.add(a);
             }

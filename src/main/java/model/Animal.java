@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Data // Genera Getters, Setters, toString...
 @NoArgsConstructor // Genera constructor vacío Animal()
 @AllArgsConstructor // Genera constructor con TODOS los campos
+
 public class Animal {
     // 1. Atributos
     private String id;
@@ -17,6 +18,7 @@ public class Animal {
     private boolean esterilizado;
     private LocalDate fechaUltimaRabia;
     private TipoAnimal especie;
+    private String idAdoptante;
 
     // 3. Constructor para el Controller (El de 3 parámetros)
     public Animal(String nombre, double peso, TipoAnimal especie) {

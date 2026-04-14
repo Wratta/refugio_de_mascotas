@@ -12,7 +12,7 @@ public class main {
         int opcion = 0;
 
         do {
-            System.out.println("\n--- 🐾 SISTEMA DE GESTIÓN: PROTECTORA ---");
+            System.out.println("\n--- SISTEMA DE GESTIÓN: PROTECTORA ---");
             System.out.println("1. Registrar nuevo animal");
             System.out.println("2. Ver lista de animales");
             System.out.println("3. Registrar Adoptante (Fase 2)");
@@ -38,7 +38,7 @@ public class main {
                         control.registrarNuevoAnimal(nombre, peso, especie);
                         break;
                     case 2:
-                        System.out.println("\n--- 📜 LISTADO DE ANIMALES EN EL REFUGIO ---");
+                        System.out.println("\n--- LISTADO DE ANIMALES EN EL REFUGIO ---");
                         List<Animal> animales = control.listarAnimales();
 
                         if (animales.isEmpty()) {
