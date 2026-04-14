@@ -16,14 +16,11 @@ body {
     min-height: 100vh;
     margin: 0;
 }
-
 .form-container {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    max-width: 600px;
-    width: 90%;
+    max-width: 900px; /* Ampliamos un poco para dar aire a la tabla */
+    width: 95%;
+    margin: 20px auto;
+    overflow: hidden; /* Corta cualquier residuo visual */
 }
 
 .form-header {
@@ -109,10 +106,24 @@ body {
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
+#tablaAnimalesContainer {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 10px;
+}
+
+
+
+.btn-adopt, .btn-delete {
+    padding: 4px 8px;
+    font-size: 0.75rem; /* Tamaño más técnico y menos intrusivo */
+    white-space: nowrap; /* Evita que el texto del botón se parta */
+}
+
 .tabla-datos {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
+    min-width: 600px; /* Asegura legibilidad en pantallas pequeñas */
+    table-layout: auto;
 }
 
 .tabla-datos th, .tabla-datos td {
@@ -130,3 +141,35 @@ body {
     background-color: #f9f9f9;
 }
 
+.action-buttons {
+    display: flex;
+    gap: 5px;
+    flex-wrap: nowrap; /* Evita que se amontonen en vertical */
+}
+
+/* Estilos para las etiquetas de estado */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-available {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+}
+
+.status-adopted {
+    background-color: #e3f2fd;
+    color: #1565c0;
+    border: 1px solid #bbdefb;
+}
+
+.label-lock {
+    font-size: 0.75rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}

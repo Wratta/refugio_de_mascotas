@@ -41,3 +41,21 @@ Identificador Único: El borrado se realiza basándose en el microchip. Al ser u
 Confirmación de Usuario: Se implementa un paso de verificación (confirm) para prevenir eliminaciones accidentales, una práctica estándar en el diseño de interfaces de gestión de datos.
 
 Refresco Dinámico: La tabla se vuelve a renderizar inmediatamente después de modificar el array, proporcionando una respuesta instantánea al usuario sin necesidad de recargar la página.
+
+Preservación del Viewport:
+
+Overflow Management: Se ha implementado overflow-x: auto en el contenedor de la tabla. Esto garantiza que si la tabla es muy ancha (por ejemplo, en móviles), el usuario pueda deslizarla lateralmente sin que el diseño general de la web se descuadre.
+
+Box-Sizing: El uso de width: 100% combinado con un max-width en el contenedor padre asegura que la aplicación se comporte como un bloque sólido y profesional.
+
+Micro-interacciones: Los botones ahora usan padding reducido y fuentes más pequeñas para optimizar el "espacio en pantalla" (screen estate).
+
+Gestión de Valores Nulos
+
+Inicialización de Estado por Defecto:
+
+Consistencia de Datos: Se garantiza que todo nuevo registro en el sistema cumpla con el esquema de datos esperado por el controlador. En bases de datos, esto equivaldría a definir la columna id_adoptante con un valor DEFAULT NULL.
+
+Manejo de Undefined: Se ha implementado una validación robusta en el Frontend para evitar que valores no definidos se filtren en la interfaz de usuario, manteniendo la integridad visual del censo.
+
+Lógica de Negocio: Un animal no puede ser adoptado en el mismo instante de su registro de entrada; debe pasar primero por el estado de disponibilidad legal.

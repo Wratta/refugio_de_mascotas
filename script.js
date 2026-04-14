@@ -19,30 +19,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Evento: Registro de nuevo animal
     form.addEventListener('submit', (event) => {
-        event.preventDefault();
+    event.preventDefault();
 
-        const animalData = {
-            nombre: document.getElementById('nombre').value.trim(),
-            microchip: document.getElementById('microchip').value.trim(),
-            especie: document.getElementById('especie').value,
-            peso: parseFloat(document.getElementById('peso').value)
-        };
+          const animalData = {
+              nombre: document.getElementById('nombre').value.trim(),
+              microchip: document.getElementById('microchip').value.trim(),
+              especie: document.getElementById('especie').value,
+              peso: parseFloat(document.getElementById('peso').value),
+              idAdoptante: null // <--- Crucial: Todo animal nuevo entra como Disponible
+          };
 
-        if (validarFormulario(animalData)) {
-            // Guardamos en nuestro array local
-            censoAnimales.push(animalData);
-            
-            // Refrescamos la tabla con el nuevo dato
-            actualizarTabla(censoAnimales);
-            
-            // Feedback y limpieza
-            feedbackVisualBoton();
-            form.reset();
-            document.getElementById('nombre').focus();
-            
-            console.log("Nuevo animal registrado en memoria:", animalData);
-        }
-    });
+          if (validarFormulario(animalData)) {
+              censoAnimales.push(animalData);
+              actualizarTabla(censoAnimales);
+              
+              feedbackVisualBoton();
+              form.reset();
+              document.getElementById('nombre').focus();
+          }
+          });
 
     // Evento: Búsqueda por microchip
     btnBuscar.addEventListener('click', () => {
@@ -103,7 +98,7 @@ function actualizarTabla(lista) {
     const contenedor = document.getElementById('tablaAnimalesContainer');
     
     if (lista.length === 0) {
-        contenedor.innerHTML = "<p style='text-align: center; padding: 20px; color: #888;'>No se han encontrado registros.</p>";
+        contenedor.innerHTML = "<p style='text-align: center; padding: 20px; color: #888;'>No se han encontrado registros en el censo.</p>";
         return;
     }
 
@@ -111,32 +106,40 @@ function actualizarTabla(lista) {
         <table class="tabla-datos">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Microchip</th>
-                    <th>Especie</th>
-                    <th>Peso (kg)</th>
-                    <th>Acciones</th>
+                  <th>Nombre</th>
+                  <th>Microchip</th>
+                  <th>Esp.</th> <th>Peso</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>`;
 
-    lista.forEach(animal => {
-    const estado = animal.idAdoptante ? "Adoptado" : "Disponible";
-    
-    html += `
-        <tr>
-            <td>${animal.nombre}</td>
-            <td>${animal.microchip}</td>
-            <td>${animal.especie}</td>
-            <td>${animal.peso.toFixed(2)} kg</td>
-            <td>${estado}</td>
-            <td>
-                <button class="btn-delete" onclick="eliminarAnimal('${animal.microchip}')">
-                    Eliminar
-                </button>
-            </td>
-        </tr>`;
-});
+  lista.forEach(animal => {
+      // Comprobamos si tiene un adoptante asignado de forma segura
+      const tieneAdoptante = animal.idAdoptante !== null && animal.idAdoptante !== undefined && animal.idAdoptante !== "";
+      
+      const textoEstado = tieneAdoptante ? `Adoptado (${animal.idAdoptante})` : "Disponible";
+      const claseEstado = tieneAdoptante ? "status-adopted" : "status-available";
+      
+      html += `
+          <tr>
+              <td>${animal.nombre}</td>
+              <td>${animal.microchip}</td>
+              <td>${animal.especie === 'PERRO' ? 'Canina' : 'Felina'}</td>
+              <td>${animal.peso.toFixed(2)}</td>
+              <td><span class="status-badge ${claseEstado}">${textoEstado}</span></td>
+              <td>
+                  <div class="action-buttons">
+                      ${!tieneAdoptante ? 
+                          `<button class="btn-adopt" onclick="simularAdopcion('${animal.microchip}')">Adoptar</button>` : 
+                          `<span class="label-lock">Vinculado</span>`
+                      }
+                      <button class="btn-delete" onclick="eliminarAnimal('${animal.microchip}')">Eliminar</button>
+                  </div>
+              </td>
+          </tr>`;
+  });
 
     html += `</tbody></table>`;
     contenedor.innerHTML = html;
