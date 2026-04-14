@@ -172,3 +172,22 @@ Hemos añadido la clase adoptante, el AnimalDao (que se encarga de gestionar la 
 En la clase Main, trabajo ahora en ver un listado de los animales en la BBDD.
 
 En la siguiente fase, registraremos un Adoptante, y mejoraremos esta clase.
+
+Trabajamos ahora en empezar la web
+1. Capa de Presentación (Frontend): * El usuario rellena el formulario en index.html.
+
+Validación Multimedia: Antes de enviar nada, un script de JavaScript comprueba que el microchip tenga 15 dígitos. Esto ahorra trabajo al servidor.
+
+2. Capa de Control (controller): * Los datos viajan al Controller. Este recibe los parámetros (nombre, especie, microchip...).
+
+Aquí es donde se instancia el Modelo: Animal nuevoAnimal = new Animal(...).
+
+El Controller llama a ConexionDB para asegurar que el "puente" con MySQL esté abierto.
+
+3. Capa de Persistencia (dao): * El Controller le pasa el objeto nuevoAnimal al método animalDAO.insertar(nuevoAnimal).
+
+El DAO traduce el objeto Java a una sentencia SQL INSERT INTO animales....
+
+4. Base de Datos (MySQL): * MySQL ejecuta la sentencia, verifica que el microchip sea único (UNIQUE constraint) y devuelve un "OK".
+
+5. Feedback (Frontend): * El Controller recibe el éxito del DAO y redirige al usuario a una página de "Éxito" o actualiza la lista mediante una transición visual atractiva.

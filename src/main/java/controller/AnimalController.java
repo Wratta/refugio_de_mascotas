@@ -26,4 +26,12 @@ public class AnimalController {
     public List<Animal> listarAnimales() {
         return animalDAO.obtenerTodos();
     }
+
+    public Animal obtenerAnimalPorMicrochip(String microchip) {
+        if (microchip == null || microchip.length() != 15) {
+            System.out.println("Error: Formato de microchip no válido para búsqueda.");
+            return null;
+        }
+        return animalDAO.buscarPorMicrochip(microchip);
+    }
 }

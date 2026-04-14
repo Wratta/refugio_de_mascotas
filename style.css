@@ -1,0 +1,132 @@
+/* Variables para facilitar cambios de diseño globales */
+:root {
+    --primary-color: #2d5a27;
+    --secondary-color: #f4f1ea;
+    --accent-color: #8db580;
+    --text-color: #333;
+    --error-color: #a94442;
+}
+
+body {
+    background-color: var(--secondary-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.form-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    max-width: 600px;
+    width: 90%;
+}
+
+.form-header {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+}
+
+.form-header h1 { margin: 0.5rem 0; font-size: 1.8rem; }
+.form-header p { color: #666; font-size: 0.9rem; }
+
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Diseño multimedia responsive */
+    gap: 1.5rem;
+}
+
+@media (max-width: 480px) {
+    .input-grid { grid-template-columns: 1fr; }
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.input-group input, .input-group select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    box-sizing: border-box; /* Evita que el padding rompa el diseño */
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--accent-color);
+    outline: none;
+}
+
+.btn-submit {
+    width: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 2rem;
+    transition: transform 0.2s, background 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.btn-delete {
+    background-color: transparent;
+    color: #a94442; /* Rojo oscuro para indicar peligro/borrado */
+    border: 1px solid #a94442;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.3s;
+}
+
+.btn-delete:hover {
+    background-color: #a94442;
+    color: white;
+}
+
+.list-container {
+    margin-top: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.tabla-datos {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.tabla-datos th, .tabla-datos td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabla-datos th {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.tabla-datos tr:hover {
+    background-color: #f9f9f9;
+}
+

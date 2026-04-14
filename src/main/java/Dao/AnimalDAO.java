@@ -52,4 +52,29 @@ public class AnimalDAO {
         }
         return lista;
     }
+
+    public Animal buscarPorMicrochip(String microchip) {
+        String sql = "SELECT * FROM animales WHERE microchip = ?";
+        Animal animal = null;
+
+        try (Connection conn = dao.ConexionDB.getConexion();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, microchip);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                animal = new Animal();
+                animal.setId(rs.getInt("id_animal"));
+                animal.setNombre(rs.getString("nombre"));
+                animal.setMicrochip(rs.getString("microchip"));
+                animal.setPeso(rs.getDouble("peso"));
+                animal.setEspecie(TipoAnimal.valueOf(rs.getString("especie")));
+                animal.setIdAdoptante(rs.getString("id_adoptante"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error en la búsqueda: " + e.getMessage());
+        }
+        return animal;
+    }
 }

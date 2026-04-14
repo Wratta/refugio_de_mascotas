@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Protectora | Registro Legal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="script.js?v=2" defer></script>
+</head>
+<body>
+<div class="form-container">
+        <header class="form-header">
+            <i class="fas fa-paw fa-3x"></i>
+            <h1>Registro de Huellas</h1>
+            <p>Refugio de Animales (Inserta Nombre protectora aquí)</p>
+        </header>
+
+        <form id="animalForm" class="modern-form">
+            <div class="input-grid">
+                <div class="input-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Nombre del animal" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="microchip">Código Microchip</label>
+                    <input type="text" id="microchip" name="microchip" 
+                           placeholder="15 dígitos obligatorios" 
+                           pattern="[0-9]{15}" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="especie">Especie</label>
+                    <select id="especie" name="especie" required>
+                        <option value="" disabled selected>Selecciona especie</option>
+                        <option value="PERRO">Perro</option>
+                        <option value="GATO">Gato</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="peso">Peso (kg)</label>
+                    <input type="number" id="peso" name="peso" step="0.01" min="0" placeholder="0.00" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                Guardar en Base de Datos
+            </button>
+        </form> <div class="list-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; margin-top: 30px; margin-bottom: 15px;">
+                <h2 style="margin: 0; color: var(--primary-color);">Censo Animal</h2>
+                
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="buscarMicrochip" placeholder="Microchip..." maxlength="15" 
+                           style="padding: 5px 10px; border: 1px solid #ccc; border-radius: 4px;">
+                    <button type="button" id="btnBuscar" style="padding: 5px 15px; background: var(--primary-color); color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        Buscar
+                    </button>
+                </div>
+            </div>
+
+            <div id="tablaAnimalesContainer">
+                <p style="text-align: center; color: #888;">Cargando registros del sistema...</p>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>
