@@ -134,3 +134,15 @@ Protección de Datos: Se impide la eliminación de registros "huérfanos". Si un
 Lógica de Negocio: El sistema diferencia entre "Baja por error de entrada" (permitida) y "Baja administrativa" (restringida si hay contratos activos).
 
 Simulación de SQL: Este comportamiento imita la cláusula ON DELETE RESTRICT que definiríamos en una base de datos MySQL profesional.
+
+Modelo de Datos 
+
+Al registrar un animal, el sistema sigue ahora este flujo lógico:
+
+Instanciación: El objeto nace con idAdoptante: null.
+
+Renderizado: La función actualizarTabla detecta el valor nulo y asigna la clase status-available.
+
+Restricción: El botón "Eliminar" comprueba que el valor sigue siendo nulo antes de permitir el borrado.
+
+Actualización: Al pulsar "Adoptar", el valor deja de ser nulo, lo que cambia automáticamente la interfaz (aparece el ID del adoptante, cambia el color a azul y se bloquea la eliminación).
