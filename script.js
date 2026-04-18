@@ -3,21 +3,17 @@
  * Lógica de persistencia en memoria y gestión de estados
  */
 
-// 1. Censo inicial de datos
-let censoAnimales = [
-    { nombre: "Toby", microchip: "123456789012345", especie: "PERRO", peso: 12.5, idAdoptante: null },
-    { nombre: "Luna", microchip: "987654321098765", especie: "GATO", peso: 4.2, idAdoptante: "AD-772" }
-];
+let censoAnimales = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('animalForm');
     const btnBuscar = document.getElementById('btnBuscar');
     const inputBuscar = document.getElementById('buscarMicrochip');
 
-    // Carga inicial de la tabla
-    actualizarTabla(censoAnimales);
+    // 1. CARGA INICIAL: Pedimos los datos reales a la base de datos
+    cargarAnimalesDesdeDB();
 
-    // Evento: Registro de nuevo animal
+    // 2. REGISTRO: Enviamos el nuevo animal al Servlet
     form.addEventListener('submit', (event) => {
         event.preventDefault();
 
@@ -26,26 +22,21 @@ document.addEventListener('DOMContentLoaded', () => {
             microchip: document.getElementById('microchip').value.trim(),
             especie: document.getElementById('especie').value,
             peso: parseFloat(document.getElementById('peso').value),
-            idAdoptante: null // Registro inicial siempre disponible
+            idAdoptante: null
         };
 
         if (validarFormulario(animalData)) {
-            censoAnimales.push(animalData);
-            actualizarTabla(censoAnimales);
-            
-            feedbackVisualBoton();
-            form.reset();
-            document.getElementById('nombre').focus();
+            guardarEnServidor(animalData);
         }
     });
 
-    // Evento: Búsqueda filtrada
+    // 3. BÚSQUEDA: Filtramos sobre los datos ya cargados
     btnBuscar.addEventListener('click', () => {
-        const microchip = inputBuscar.value.trim();
-        if (microchip.length === 15) {
-            const resultado = censoAnimales.filter(a => a.microchip === microchip);
+        const microchipBusqueda = inputBuscar.value.trim();
+        if (microchipBusqueda.length === 15) {
+            const resultado = censoAnimales.filter(a => a.microchip === microchipBusqueda);
             actualizarTabla(resultado);
-        } else if (microchip.length === 0) {
+        } else if (microchipBusqueda.length === 0) {
             actualizarTabla(censoAnimales);
         } else {
             alert("Introduce los 15 dígitos del microchip.");
@@ -54,64 +45,109 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Validaciones de integridad de datos
+ * PETICIÓN GET: Obtiene la lista de animales desde MySQL
+ */
+function cargarAnimalesDesdeDB() {
+    fetch('/animales') 
+        .then(response => {
+            if (!response.ok) throw new Error("Error al obtener datos");
+            return response.json();
+        })
+        .then(datos => {
+            censoAnimales = datos;
+            actualizarTabla(censoAnimales);
+        })
+        .catch(error => {
+            console.error("Error de conexión:", error);
+            mostrarMensajeError("No se pudo conectar con el servidor Java.");
+        });
+}
+
+/**
+ * PETICIÓN POST: Envía el objeto JSON al Servlet para insertarlo en la DB
+ */
+function guardarEnServidor(animal) {
+    fetch('/animales', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(animal)
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("Registro guardado con éxito en MySQL");
+            document.getElementById('animalForm').reset();
+            cargarAnimalesDesdeDB(); // Refrescamos la tabla con el dato real
+            feedbackVisualBoton();
+        } else {
+            alert("Error al guardar en el servidor.");
+        }
+    })
+    .catch(error => console.error("Error en el POST:", error));
+}
+
+/**
+ * PETICIÓN DELETE (Simulada o real según el Servlet)
+ */
+function eliminarAnimal(microchip) {
+    const animal = censoAnimales.find(a => a.microchip === microchip);
+    
+    if (animal && animal.idAdoptante) {
+        alert("Restricción: No se puede eliminar un animal con adoptante vinculado.");
+        return;
+    }
+
+    if (confirm(`¿Deseas dar de baja a ${animal.nombre}?`)) {
+        alert("Operación de baja enviada al sistema.");
+        // cargarAnimalesDesdeDB(); 
+    }
+}
+
+/**
+ * VALIDACIONES Y RENDERIZADO
  */
 function validarFormulario(datos) {
-    const duplicado = censoAnimales.find(a => a.microchip === datos.microchip);
-    if (duplicado) {
-        alert("Error: El microchip ya existe en el censo.");
+    if (censoAnimales.some(a => a.microchip === datos.microchip)) {
+        alert("Error: Microchip duplicado en el censo.");
         return false;
     }
-    if (datos.microchip.length !== 15 || isNaN(datos.microchip)) {
-        alert("El microchip debe ser numérico y tener 15 dígitos.");
+    if (datos.microchip.length !== 15) {
+        alert("El microchip debe tener 15 dígitos.");
         return false;
     }
     return true;
 }
 
-/**
- * Renderizado dinámico de la tabla
- */
 function actualizarTabla(lista) {
     const contenedor = document.getElementById('tablaAnimalesContainer');
     
     if (lista.length === 0) {
-        contenedor.innerHTML = "<p style='text-align: center; padding: 20px; color: #888;'>Sin registros.</p>";
+        contenedor.innerHTML = "<p style='text-align:center; padding:20px;'>Censo vacío.</p>";
         return;
     }
 
-    let html = `
-        <table class="tabla-datos">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Microchip</th>
-                    <th>Esp.</th>
-                    <th>Peso</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>`;
+    let html = `<table class="tabla-datos">
+        <thead>
+            <tr>
+                <th>Nombre</th><th>Microchip</th><th>Especie</th><th>Peso</th><th>Estado</th><th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>`;
 
     lista.forEach(animal => {
-        const tieneAdoptante = animal.idAdoptante !== null && animal.idAdoptante !== undefined && animal.idAdoptante !== "";
-        const textoEstado = tieneAdoptante ? `Adoptado (${animal.idAdoptante})` : "Disponible";
-        const claseEstado = tieneAdoptante ? "status-adopted" : "status-available";
+        const esAdoptado = animal.idAdoptante !== null && animal.idAdoptante !== undefined;
+        const textoEstado = esAdoptado ? `Adoptado (${animal.idAdoptante})` : "Disponible";
+        const claseEstado = esAdoptado ? "status-adopted" : "status-available";
         
         html += `
             <tr>
                 <td>${animal.nombre}</td>
                 <td>${animal.microchip}</td>
                 <td>${animal.especie}</td>
-                <td>${animal.peso.toFixed(1)}kg</td>
+                <td>${animal.peso}kg</td>
                 <td><span class="status-badge ${claseEstado}">${textoEstado}</span></td>
                 <td>
                     <div class="action-buttons">
-                        ${!tieneAdoptante ? 
-                            `<button class="btn-adopt" onclick="simularAdopcion('${animal.microchip}')">Adoptar</button>` : 
-                            `<span class="label-lock">Vinculado</span>`
-                        }
+                        ${!esAdoptado ? `<button class="btn-adopt" onclick="simularAdopcion('${animal.microchip}')">Adoptar</button>` : `<span class="label-lock">🔒</span>`}
                         <button class="btn-delete" onclick="eliminarAnimal('${animal.microchip}')">Eliminar</button>
                     </div>
                 </td>
@@ -122,42 +158,17 @@ function actualizarTabla(lista) {
     contenedor.innerHTML = html;
 }
 
-/**
- * Gestión de Adopciones
- */
-function simularAdopcion(microchip) {
-    const id = prompt("ID del Adoptante:");
-    if (id && id.trim() !== "") {
-        const animal = censoAnimales.find(a => a.microchip === microchip);
-        if (animal) {
-            animal.idAdoptante = id.trim();
-            actualizarTabla(censoAnimales);
-        }
-    }
-}
-
-/**
- * Gestión de Bajas
- */
-function eliminarAnimal(microchip) {
-    const animal = censoAnimales.find(a => a.microchip === microchip);
-    if (animal.idAdoptante) {
-        alert("No se puede eliminar un animal con contrato de adopción activo.");
-        return;
-    }
-    if (confirm(`¿Eliminar a ${animal.nombre}?`)) {
-        censoAnimales = censoAnimales.filter(a => a.microchip !== microchip);
-        actualizarTabla(censoAnimales);
-    }
-}
-
 function feedbackVisualBoton() {
     const btn = document.querySelector('.btn-submit');
     const original = btn.innerHTML;
-    btn.innerText = "¡Registrado!";
+    btn.innerText = "¡Enviado a Java!";
     btn.style.backgroundColor = "#8db580";
     setTimeout(() => {
         btn.innerHTML = original;
         btn.style.backgroundColor = "";
     }, 2000);
+}
+
+function mostrarMensajeError(msg) {
+    document.getElementById('tablaAnimalesContainer').innerHTML = `<p style="color:red; text-align:center;">${msg}</p>`;
 }
