@@ -77,4 +77,22 @@ public class AnimalDAO {
         }
         return animal;
     }
+    public boolean eliminarAnimal(String microchip) {
+        String sql = "DELETE FROM animales WHERE microchip = ? AND id_adoptante IS NULL";
+
+        try (Connection conn = dao.ConexionDB.getConexion();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, microchip);
+            int filasAfectadas = pstmt.executeUpdate();
+
+            // Si filasAfectadas > 0, es que se borró con éxito
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar: " + e.getMessage());
+            return false;
+        }
+    }
+
 }

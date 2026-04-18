@@ -191,3 +191,7 @@ El DAO traduce el objeto Java a una sentencia SQL INSERT INTO animales....
 4. Base de Datos (MySQL): * MySQL ejecuta la sentencia, verifica que el microchip sea único (UNIQUE constraint) y devuelve un "OK".
 
 5. Feedback (Frontend): * El Controller recibe el éxito del DAO y redirige al usuario a una página de "Éxito" o actualiza la lista mediante una transición visual atractiva.
+
+Creamos el método EliminarAnimal() en java, para futuro.
+
+Además, creamos un Servlet en java para comunicar el FrontEnd con el BackEnd.
