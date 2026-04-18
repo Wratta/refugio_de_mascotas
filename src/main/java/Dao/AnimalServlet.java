@@ -1,8 +1,15 @@
 package Dao;
 
+import com.google.gson.Gson;
 import model.Animal;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.List;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/animales")
 public class AnimalServlet extends HttpServlet {
