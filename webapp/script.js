@@ -48,8 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
  * PETICIÓN GET: Obtiene la lista de animales desde MySQL
  */
 function cargarAnimalesDesdeDB() {
-    fetch('/animales') 
-        .then(response => {
+    fetch('animales')
+            .then(response => response.json()) {
             if (!response.ok) throw new Error("Error al obtener datos");
             return response.json();
         })
@@ -67,7 +67,7 @@ function cargarAnimalesDesdeDB() {
  * PETICIÓN POST: Envía el objeto JSON al Servlet para insertarlo en la DB
  */
 function guardarEnServidor(animal) {
-    fetch('/animales', {
+    fetch('animales', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(animal)

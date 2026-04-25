@@ -1,4 +1,4 @@
-package dao;
+package Dao;
 
 import model.Animal;
 import model.TipoAnimal;
@@ -12,7 +12,7 @@ public class AnimalDAO {
         // Añadimos 'microchip' a la consulta SQL
         String sql = "INSERT INTO animales (nombre, microchip, especie, peso) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = dao.ConexionDB.getConexion();
+        try (Connection conn = ConexionDB.getConexion();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, animal.getNombre());
@@ -32,7 +32,7 @@ public class AnimalDAO {
         List<Animal> lista = new ArrayList<>();
         String sql = "SELECT * FROM animales";
 
-        try (Connection conn = dao.ConexionDB.getConexion();
+        try (Connection conn = ConexionDB.getConexion();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -57,7 +57,7 @@ public class AnimalDAO {
         String sql = "SELECT * FROM animales WHERE microchip = ?";
         Animal animal = null;
 
-        try (Connection conn = dao.ConexionDB.getConexion();
+        try (Connection conn = ConexionDB.getConexion();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, microchip);
@@ -65,7 +65,7 @@ public class AnimalDAO {
 
             if (rs.next()) {
                 animal = new Animal();
-                animal.setId(rs.getInt("id_animal"));
+                animal.setId(rs.getString("id_animal"));
                 animal.setNombre(rs.getString("nombre"));
                 animal.setMicrochip(rs.getString("microchip"));
                 animal.setPeso(rs.getDouble("peso"));
@@ -80,7 +80,7 @@ public class AnimalDAO {
     public boolean eliminarAnimal(String microchip) {
         String sql = "DELETE FROM animales WHERE microchip = ? AND id_adoptante IS NULL";
 
-        try (Connection conn = dao.ConexionDB.getConexion();
+        try (Connection conn = ConexionDB.getConexion();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, microchip);

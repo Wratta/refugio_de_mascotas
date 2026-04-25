@@ -59,3 +59,6 @@ Consistencia de Datos: Se garantiza que todo nuevo registro en el sistema cumpla
 Manejo de Undefined: Se ha implementado una validación robusta en el Frontend para evitar que valores no definidos se filtren en la interfaz de usuario, manteniendo la integridad visual del censo.
 
 Lógica de Negocio: Un animal no puede ser adoptado en el mismo instante de su registro de entrada; debe pasar primero por el estado de disponibilidad legal.
+
+Vale, me acabo de dar cuenta que en lenguaje de marcas solo habías pedido el XML + XSD. Así que dejaré esto como está, y me pondré solo con eso.
+

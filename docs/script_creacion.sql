@@ -35,3 +35,19 @@ CREATE TABLE vacunas (
     CONSTRAINT fk_animal_vacuna FOREIGN KEY (id_animal) 
         REFERENCES animales(id_animal) ON DELETE CASCADE
 );
+
+-- 4. Añadido usuarios de la app con sus roles (Para permisos)
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL, -- Siempre encriptada en el futuro
+    nombre VARCHAR(100),
+    rol ENUM('VOLUNTARIO', 'VETERINARIO', 'DUENO') NOT NULL
+);
+-- 5. Modificación de la Tabla animales con nuevos datos (Para decesos)
+ALTER TABLE animales 
+ADD COLUMN estado ENUM('ACTIVO', 'ADOPTADO', 'FALLECIDO') DEFAULT 'ACTIVO',
+ADD COLUMN causa_baja TEXT, 
+ADD COLUMN fecha_baja DATE,
+ADD COLUMN veterinario_id INT,
+ADD FOREIGN KEY (veterinario_id) REFERENCES usuarios(id);

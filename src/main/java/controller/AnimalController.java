@@ -1,7 +1,7 @@
 package controller;
 
 import model.Animal;
-import dao.AnimalDAO;
+import Dao.AnimalDAO;
 import model.TipoAnimal;
 
 import java.util.List;

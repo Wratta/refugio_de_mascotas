@@ -195,3 +195,8 @@ El DAO traduce el objeto Java a una sentencia SQL INSERT INTO animales....
 Creamos el método EliminarAnimal() en java, para futuro.
 
 Además, creamos un Servlet en java para comunicar el FrontEnd con el BackEnd.
+
+Empiezo con los roles en la BBDD, y además implemento un sistema de decesos de animales para el apartado legal o auditorías.
+Historial de Intervenciones o Log de Bajas.
+Si un veterinario da de baja a un animal, no basta con borrarlo (de hecho, nunca se debe borrar de la base de datos). Se cambia su estado a FALLECIDO y se guarda quién lo hizo y por qué. El "Borrado Lógico".
+Para temas estadísticos también viene bien llevar un conteo de cúantos animales han muerto en el año en curso, cúantos desde que lleva abierto el centro,etc...

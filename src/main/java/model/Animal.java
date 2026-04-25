@@ -16,9 +16,10 @@ public class Animal {
     private String microchip;
     private double peso;
     private boolean esterilizado;
-    private LocalDate fechaUltimaRabia;
+    private String fechaUltimaRabia; // Antes era LocalDate, pero da un conflicto con Java 8+
     private TipoAnimal especie;
     private String idAdoptante;
+    private String fechaIngreso; // Antes era LocalDate, pero da un conflicto con Java 8+
 
     // 3. Constructor para el Controller (El de 3 parámetros)
     public Animal(String nombre, double peso, TipoAnimal especie) {
