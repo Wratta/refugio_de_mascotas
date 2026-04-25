@@ -105,6 +105,7 @@ function eliminarAnimal(microchip) {
 /**
  * VALIDACIONES Y RENDERIZADO
  */
+
 function validarFormulario(datos) {
     if (censoAnimales.some(a => a.microchip === datos.microchip)) {
         alert("Error: Microchip duplicado en el censo.");
@@ -115,6 +116,30 @@ function validarFormulario(datos) {
         return false;
     }
     return true;
+}
+
+function ejecutarLogin() {
+    const user = document.getElementById("user").value;
+    const pass = document.getElementById("pass").value;
+
+    // Enviamos los datos al Servlet
+    fetch(`login?username=${user}&password=${pass}`, { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById("loginSection").style.display = "none";
+                document.getElementById("contenidoWeb").style.display = "block";
+                
+                // Si es VETERINARIO, mostramos sus herramientas
+                if (data.rol === "VETERINARIO") {
+                    document.getElementById("controlesVeterinario").style.display = "block";
+                }
+                
+                cargarAnimales();
+            } else {
+                alert(data.message);
+            }
+        });
 }
 
 function actualizarTabla(lista) {

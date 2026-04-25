@@ -95,4 +95,23 @@ public class AnimalDAO {
         }
     }
 
+    public boolean registrarDefuncion(int idAnimal, String causa, int idVeterinario) {
+        String sql = "UPDATE animales SET estado='FALLECIDO', causa_baja=?, fecha_baja=CURDATE(), veterinario_id=? WHERE id=?";
+
+        try (Connection con = ConexionDB.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, causa);
+            ps.setInt(2, idVeterinario);
+            ps.setInt(3, idAnimal);
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
 }

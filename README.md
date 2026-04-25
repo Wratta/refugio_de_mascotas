@@ -200,3 +200,32 @@ Empiezo con los roles en la BBDD, y además implemento un sistema de decesos de 
 Historial de Intervenciones o Log de Bajas.
 Si un veterinario da de baja a un animal, no basta con borrarlo (de hecho, nunca se debe borrar de la base de datos). Se cambia su estado a FALLECIDO y se guarda quién lo hizo y por qué. El "Borrado Lógico".
 Para temas estadísticos también viene bien llevar un conteo de cúantos animales han muerto en el año en curso, cúantos desde que lleva abierto el centro,etc...
+
+Resumiendo hasta ahora
+
+Este proyecto es una aplicación web Java (JEE) diseñada para gestionar una protectora de animales, permitiendo el control de stock de mascotas, registros veterinarios y gestión de usuarios por roles.
+
+## 🚀 Tecnologías Utilizadas
+* **Backend:** Java 21 (configurado para compatibilidad Java 8 en Jetty 9).
+* **Servidor de Aplicaciones:** Jetty 9.4.44.v20210927.
+* **Base de Datos:** MySQL (XAMPP).
+* **Librerías Clave:** * `Gson`: Para la conversión de objetos a JSON.
+    * `MySQL Connector`: Para la comunicación con la BD.
+    * `Lombok`: Para la simplificación de modelos (Getters/Setters).
+
+## 🏛️ Arquitectura del Proyecto (Patrón DAO)
+El proyecto sigue una estructura de capas para separar la lógica de negocio del acceso a datos:
+- `model`: Clases POJO (`Animal`, `Usuario`, `Rol`).
+- `Dao`: Lógica de acceso a la base de datos (`AnimalDAO`, `UsuarioDAO`, `ConexionDB`).
+- `controller`: Servlets que actúan como intermediarios entre el cliente y el servidor.
+
+## 🔐 Gestión de Seguridad y Roles
+Se ha implementado un sistema de autenticación basado en **Sesiones (`HttpSession`)** con tres niveles de acceso:
+1. **DUEÑO:** Control total del sistema.
+2. **VETERINARIO:** Permisos para acciones médicas (chips, vacunas) y registro de bajas legales.
+3. **VOLUNTARIO:** Acceso de solo lectura o edición básica.
+
+## 📊 Base de Datos
+La base de datos cuenta con dos tablas principales relacionadas:
+- `usuarios`: Almacena credenciales y roles.
+- `animales`: Almacena la ficha técnica de la mascota, incluyendo campos de auditoría para bajas (`causa_baja`, `fecha_baja`, `veterinario_id`).

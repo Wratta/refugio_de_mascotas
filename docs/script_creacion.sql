@@ -51,3 +51,54 @@ ADD COLUMN causa_baja TEXT,
 ADD COLUMN fecha_baja DATE,
 ADD COLUMN veterinario_id INT,
 ADD FOREIGN KEY (veterinario_id) REFERENCES usuarios(id);
+
+-- 6. Primero creamos la tabla si no se ha creado
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    nombre VARCHAR(100),
+    rol ENUM('VOLUNTARIO', 'VETERINARIO', 'DUENO') NOT NULL
+);
+
+-- Insertamos un Veterinario
+INSERT INTO usuarios (username, password, nombre, rol) 
+VALUES ('pedro_vet', '1234', 'Dr. Pedro Sánchez', 'VETERINARIO');
+
+-- Insertamos un Voluntario
+INSERT INTO usuarios (username, password, nombre, rol) 
+VALUES ('ana_vol', '1234', 'Ana García', 'VOLUNTARIO');
+
+-- Insertamos al Dueño/Administrador
+INSERT INTO usuarios (username, password, nombre, rol) 
+VALUES ('admin', 'admin123', 'Dueño de la Protectora', 'DUENO');
+
+-- 7. Añado los campos de salud para que el Veterinario tenga trabajo que hacer
+ALTER TABLE animales 
+ADD COLUMN chip_numero VARCHAR(50),
+ADD COLUMN esterilizado BOOLEAN DEFAULT FALSE,
+ADD COLUMN vacunas_al_dia BOOLEAN DEFAULT FALSE,
+ADD COLUMN observaciones_veterinarias TEXT;
+
+-- 8. Guardamos la query en Views, para temas legales.
+SQL
+CREATE VIEW reporte_bajas_legales AS
+SELECT 
+    a.id_animal AS animal_id,
+    a.nombre AS mascota,
+    a.causa_baja, 
+    a.fecha_baja, 
+    u.nombre AS veterinario_responsable
+FROM animales a
+JOIN usuarios u ON a.veterinario_id = u.id
+WHERE a.estado = 'FALLECIDO';
+
+-- 9. Guardamos otra query en Views, para temas legales. (reportes mensuales de bajas, también para temas estadísticos si hiciera falta)
+
+DELIMITER //
+CREATE PROCEDURE obtenerBajasPorMes(IN mes INT, IN anio INT)
+BEGIN
+    SELECT * FROM reporte_bajas_legales 
+    WHERE MONTH(fecha_baja) = mes AND YEAR(fecha_baja) = anio;
+END //
+DELIMITER ;
