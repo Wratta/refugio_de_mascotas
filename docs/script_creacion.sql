@@ -102,3 +102,16 @@ BEGIN
     WHERE MONTH(fecha_baja) = mes AND YEAR(fecha_baja) = anio;
 END //
 DELIMITER ;
+
+--10. Añadimos datos ficticios para test posteriores
+-- 1. Insertar un animal ACTIVO (Para comparar)
+INSERT INTO animales (nombre, especie, raza, fecha_ingreso, estado, vacunas_al_dia) 
+VALUES ('Rex', 'Perro', 'Pastor Alemán', '2026-01-10', 'ACTIVO', 1);
+
+-- 2. Insertar una baja por enfermedad (Causa legal)
+INSERT INTO animales (nombre, especie, raza, fecha_ingreso, estado, causa_baja, fecha_baja, veterinario_id) 
+VALUES ('Thor', 'Perro', 'Boxer', '2025-05-20', 'FALLECIDO', 'Parvovirus severo - Fallo multiorgánico', '2026-04-15', 1);
+
+-- 3. Insertar una baja por vejez
+INSERT INTO animales (nombre, especie, raza, fecha_ingreso, estado, causa_baja, fecha_baja, veterinario_id) 
+VALUES ('Luna', 'Gato', 'Común Europeo', '2020-02-10', 'FALLECIDO', 'Paro cardíaco por edad avanzada (18 años)', '2026-04-22', 1);

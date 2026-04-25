@@ -62,3 +62,6 @@ Lógica de Negocio: Un animal no puede ser adoptado en el mismo instante de su r
 
 Vale, me acabo de dar cuenta que en lenguaje de marcas solo habías pedido el XML + XSD. Así que dejaré esto como está, y me pondré solo con eso.
 
+Para integrar la generación de XML en tu proyecto Java, utilizamos JAXB (Java Architecture for XML Binding). Esta es la forma estándar en Java para convertir objetos en archivos XML y viceversa.
+
+Creo dos clases en Java para sacar este reporte.

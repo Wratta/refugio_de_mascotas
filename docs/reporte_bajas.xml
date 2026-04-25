@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reporteBajas 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="reporte_bajas.xsd">
+    
+    <animal>
+        <id>10</id>
+        <nombre>Thor</nombre>
+        <especie>Canina</especie>
+        <causaBaja>Parvovirus</causaBaja>
+        <fechaBaja>2026-04-20</fechaBaja>
+        <veterinarioResponsable>Dr. Pedro Sánchez</veterinarioResponsable>
+    </animal>
+    
+    <animal>
+        <id>15</id>
+        <nombre>Luna</nombre>
+        <especie>Felina</especie>
+        <causaBaja>Vejez</causaBaja>
+        <fechaBaja>2026-04-22</fechaBaja>
+        <veterinarioResponsable>Dra. Elena García</veterinarioResponsable>
+    </animal>
+</reporteBajas>
