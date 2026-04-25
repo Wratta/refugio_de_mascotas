@@ -44,6 +44,7 @@ public class AnimalDAO {
                 a.setPeso(rs.getDouble("peso"));
                 a.setEspecie(TipoAnimal.valueOf(rs.getString("especie")));
                 a.setIdAdoptante(rs.getString("id_adoptante")); // FK hacia adoptante
+                a.setEstado(rs.getString("estado"));
 
                 lista.add(a);
             }
@@ -112,6 +113,38 @@ public class AnimalDAO {
         }
     }
 
+    public List<Animal> obtenerSoloBajas() {
+        List<Animal> lista = new ArrayList<>();
+        // Asegúrate de que la columna se llame 'estado' en tu DB
+        String sql = "SELECT * FROM animales WHERE estado = 'FALLECIDO'";
+
+        try (Connection con = ConexionDB.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Animal a = new Animal();
+                // 1. Corregido: Usar el nombre de columna correcto y el tipo correcto
+                a.setId(rs.getString("id_animal"));
+                a.setNombre(rs.getString("nombre"));
+
+                // 2. Corregido: Conversión de String a Enum TipoAnimal
+                String especieBD = rs.getString("especie");
+                if (especieBD != null) {
+                    a.setEspecie(TipoAnimal.valueOf(especieBD.toUpperCase().trim()));
+                }
+
+                // 3. Estos campos deben existir en tu clase Animal.java
+                a.setCausaBaja(rs.getString("causa_baja"));
+                a.setFechaBaja(rs.getString("fecha_baja"));
+
+                lista.add(a);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error en obtenerSoloBajas: " + e.getMessage());
+        }
+        return lista;
+    }
 
 
 }

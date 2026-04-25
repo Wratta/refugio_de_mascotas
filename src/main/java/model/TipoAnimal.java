@@ -1,22 +1,18 @@
 package model;
 
 public enum TipoAnimal {
-    PERRO("Canino", 0.02),
-    GATO("Felino", 0.015);
+    PERRO(0.02),
+    GATO(0.015);
 
-    private final String descripcion;
-    private final double factorComida;
+    private final double factorComida; // El atributo
 
-    TipoAnimal(String descripcion, double factorComida) {
-        this.descripcion = descripcion;
+    // El constructor
+    TipoAnimal(double factorComida) {
         this.factorComida = factorComida;
     }
 
+
     public double getFactorComida() {
         return factorComida;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
     }
 }
