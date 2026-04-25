@@ -3,6 +3,7 @@ import model.Animal;
 import model.TipoAnimal;
 import java.util.List;
 import java.util.Scanner;
+import static model.ExportadorXML.generarReporte;
 
 public class main {
     private static final AnimalDAO animalDAO = new AnimalDAO();
@@ -41,7 +42,7 @@ public class main {
                     case 5:
                         System.out.println("Llamando al módulo de Lenguajes de Marcas...");
                         System.out.println("Generando 'reporte_bajas.xml' mediante JAXB...");
-                        // Aquí iría la llamada a tu ExportadorXML.java
+                        generarReporte();
                         break;
                     case 6:
                         System.out.println("Módulo en desarrollo para la Fase 2.");

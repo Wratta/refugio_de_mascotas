@@ -1,26 +1,23 @@
 package model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-@XmlRootElement(name = "reporteBajas") // Nombre de la etiqueta raíz
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@XmlRootElement(name = "reporteBajas")
+@XmlAccessorType(XmlAccessType.FIELD) // <--- ESTA LÍNEA ES LA QUE QUITA LOS 2 ERRORES
 public class ReporteBajas {
 
+    @XmlElement(name = "animal")
     private List<Animal> animales;
 
-    public ReporteBajas() {} // Constructor vacío obligatorio para JAXB
-
-    public ReporteBajas(List<Animal> animales) {
-        this.animales = animales;
-    }
-
-    @XmlElement(name = "animal") // Cada objeto de la lista será una etiqueta <animal>
-    public List<Animal> getAnimales() {
-        return animales;
-    }
-
-    public void setAnimales(List<Animal> animales) {
-        this.animales = animales;
-    }
 }

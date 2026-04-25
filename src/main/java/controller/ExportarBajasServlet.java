@@ -38,8 +38,8 @@ public class ExportarBajasServlet extends HttpServlet {
 
         try {
             // 2. Obtener los datos de la base de datos (solo los fallecidos)
-            List<Animal> listaBajas = animalDAO.obtenerSoloBajas(); // Debes crear este método en tu DAO
-            ReporteBajas reporte = new ReporteBajas(listaBajas);
+            List<Animal> bajas = animalDAO.obtenerSoloBajas(); // Debes crear este método en tu DAO
+            ReporteBajas reporte = new ReporteBajas(bajas);
 
             // 3. Configurar la respuesta del navegador para descargar un archivo
             response.setContentType("application/xml");

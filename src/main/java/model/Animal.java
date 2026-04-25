@@ -4,20 +4,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import java.time.LocalDate;
 
-@Data // Genera Getters, Setters, toString...
-@NoArgsConstructor // Genera constructor vacío Animal()
-@AllArgsConstructor // Genera constructor con TODOS los campos
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @XmlRootElement(name = "animal")
+@XmlAccessorType(XmlAccessType.FIELD)
 // Definimos el orden para que el XML sea idéntico al XSD de Lenguajes de Marcas
-@XmlType(propOrder = {"id", "nombre", "especie", "raza", "fechaIngreso", "estado", "causaBaja", "fechaBaja", "vacunasAlDia"})
 public class Animal {
     // 1. Atributos
-    private String id;
+    private int id_animal;
     private String nombre;
     private String microchip;
     private double peso;
@@ -29,6 +27,7 @@ public class Animal {
     private String idAdoptante;
     private String estado; // ACTIVO, FALLECIDO, ADOPTADO
     private String causaBaja; // Solo para fallecidos
+
     private String fechaBaja;  // Solo para fallecidos
     private boolean vacunasAlDia;
 
@@ -37,6 +36,10 @@ public class Animal {
         this.nombre = nombre;
         this.peso = peso;
         this.especie = especie;
+    }
+
+    public void setId(int id) {
+        this.id_animal = id;
     }
 
     // 4. Getters y Setters (Manuales para evitar líos de versiones)

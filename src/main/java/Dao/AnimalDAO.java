@@ -9,22 +9,37 @@ import java.util.List;
 public class AnimalDAO {
 
     public void guardarAnimal(Animal animal) {
-        // Añadimos 'microchip' a la consulta SQL
-        String sql = "INSERT INTO animales (nombre, microchip, especie, peso) VALUES (?, ?, ?, ?)";
+        // 1. Añadimos 'estado' a la consulta para que no se guarde vacío
+        String sql = "INSERT INTO animales (nombre, microchip, especie, peso, estado) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = ConexionDB.getConexion();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, animal.getNombre());
-            pstmt.setString(2, animal.getMicrochip()); // <-- Nuevo campo legal
-            pstmt.setString(3, animal.getEspecie().toString());
+            pstmt.setString(2, animal.getMicrochip());
+
+            // 2. Usamos .name() para guardar "PERRO" o "GATO" (el nombre del Enum)
+            pstmt.setString(3, animal.getEspecie().name());
+
             pstmt.setDouble(4, animal.getPeso());
 
-            pstmt.executeUpdate();
-            System.out.println("¡Animal " + animal.getNombre() + " registrado con microchip " + animal.getMicrochip() + "!");
+            // Forzamos que al guardar siempre sea ACTIVO si no tiene otro estado
+            String estadoAGuardar = (animal.getEstado() != null) ? animal.getEstado() : "ACTIVO";
+            pstmt.setString(5, estadoAGuardar);
+
+            int filas = pstmt.executeUpdate();
+
+            if (filas > 0) {
+                System.out.println("¡Registro exitoso! " + animal.getNombre() + " ya está en la base de datos.");
+            }
 
         } catch (SQLException e) {
-            System.out.println("Error de persistencia: " + e.getMessage());
+            // 4. Capturamos si el microchip está duplicado (si es UNIQUE en la BD)
+            if (e.getErrorCode() == 1062) { // Código de error de MySQL para duplicados
+                System.out.println("Error: El microchip " + animal.getMicrochip() + " ya existe.");
+            } else {
+                System.out.println("Error de persistencia: " + e.getMessage());
+            }
         }
     }
 
@@ -38,7 +53,7 @@ public class AnimalDAO {
 
             while (rs.next()) {
                 Animal a = new Animal();
-                a.setId(rs.getString("id_animal"));
+                a.setId(rs.getInt("id_animal"));
                 a.setNombre(rs.getString("nombre"));
                 a.setMicrochip(rs.getString("microchip")); // Recogemos el microchip
                 a.setPeso(rs.getDouble("peso"));
@@ -66,7 +81,7 @@ public class AnimalDAO {
 
             if (rs.next()) {
                 animal = new Animal();
-                animal.setId(rs.getString("id_animal"));
+                animal.setId(rs.getInt("id_animal"));
                 animal.setNombre(rs.getString("nombre"));
                 animal.setMicrochip(rs.getString("microchip"));
                 animal.setPeso(rs.getDouble("peso"));
@@ -125,7 +140,7 @@ public class AnimalDAO {
             while (rs.next()) {
                 Animal a = new Animal();
                 // 1. Corregido: Usar el nombre de columna correcto y el tipo correcto
-                a.setId(rs.getString("id_animal"));
+                a.setId(rs.getInt("id_animal"));
                 a.setNombre(rs.getString("nombre"));
 
                 // 2. Corregido: Conversión de String a Enum TipoAnimal
