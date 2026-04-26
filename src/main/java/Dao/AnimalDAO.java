@@ -8,7 +8,7 @@ import java.util.List;
 
 public class AnimalDAO {
 
-    public void guardarAnimal(Animal animal) {
+    public boolean guardarAnimal(Animal animal) {
         // 1. Añadimos 'estado' a la consulta para que no se guarde vacío
         String sql = "INSERT INTO animales (nombre, microchip, especie, peso, estado) VALUES (?, ?, ?, ?, ?)";
 
@@ -32,6 +32,7 @@ public class AnimalDAO {
             if (filas > 0) {
                 System.out.println("¡Registro exitoso! " + animal.getNombre() + " ya está en la base de datos.");
             }
+            return true;
 
         } catch (SQLException e) {
             // 4. Capturamos si el microchip está duplicado (si es UNIQUE en la BD)
@@ -40,6 +41,7 @@ public class AnimalDAO {
             } else {
                 System.out.println("Error de persistencia: " + e.getMessage());
             }
+            return false;
         }
     }
 
