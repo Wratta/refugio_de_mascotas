@@ -27,9 +27,9 @@ public class Animal {
     private String idAdoptante;
     private String estado; // ACTIVO, FALLECIDO, ADOPTADO
     private String causaBaja; // Solo para fallecidos
-
     private String fechaBaja;  // Solo para fallecidos
     private boolean vacunasAlDia;
+    private int idVeterinario;
 
     // 3. Constructor para el Controller (El de 3 parámetros)
     public Animal(String nombre, double peso, TipoAnimal especie) {
@@ -57,10 +57,4 @@ public class Animal {
         if (especie == null) return 0;
         return this.peso * especie.getFactorComida();
     }
-
-    @XmlElement(name = "causaBaja")
-    public String getCausaBaja() { return causaBaja; }
-
-    @XmlElement(name = "fechaBaja")
-    public String getFechaBaja() { return fechaBaja; }
 }

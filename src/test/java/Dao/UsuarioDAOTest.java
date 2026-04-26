@@ -41,4 +41,12 @@ public class UsuarioDAOTest {
         Usuario inexistente = dao.login("fantasma", "1234");
         assertNull(inexistente);
     }
+
+    @Test
+    void testLoginContrasenaIncorrecta() {
+        UsuarioDAO dao = new UsuarioDAO();
+        // Usuario real, clave inventada
+        Usuario user = dao.login("admin", "clave_falsa_123");
+        assertNull(user, "El login no debe permitir el acceso con clave errónea");
+    }
 }

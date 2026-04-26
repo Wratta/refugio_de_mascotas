@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<reporteBajas>
+    <animal>
+        <id_animal>5</id_animal>
+        <nombre>Thor</nombre>
+        <peso>0.0</peso>
+        <esterilizado>false</esterilizado>
+        <especie>PERRO</especie>
+        <causaBaja>Parvovirus severo - Fallo multiorgánico</causaBaja>
+        <fechaBaja>2026-04-15</fechaBaja>
+        <vacunasAlDia>false</vacunasAlDia>
+    </animal>
+    <animal>
+        <id_animal>6</id_animal>
+        <nombre>Luna</nombre>
+        <peso>0.0</peso>
+        <esterilizado>false</esterilizado>
+        <especie>GATO</especie>
+        <causaBaja>Paro cardíaco por edad avanzada (18 años)</causaBaja>
+        <fechaBaja>2026-04-22</fechaBaja>
+        <vacunasAlDia>false</vacunasAlDia>
+    </animal>
+</reporteBajas>

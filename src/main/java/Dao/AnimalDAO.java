@@ -113,21 +113,45 @@ public class AnimalDAO {
         }
     }
 
-    public boolean registrarDefuncion(int idAnimal, String causa, int idVeterinario) {
-        String sql = "UPDATE animales SET estado='FALLECIDO', causa_baja=?, fecha_baja=CURDATE(), veterinario_id=? WHERE id=?";
+    public boolean registrarDefuncion(int id_animal, String causa_baja, int veterinario_id) {
+        String sql = "UPDATE animales SET estado='FALLECIDO', causa_baja=?, fecha_baja=CURDATE(), veterinario_id=? WHERE id_animal=?";
 
         try (Connection con = ConexionDB.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, causa);
-            ps.setInt(2, idVeterinario);
-            ps.setInt(3, idAnimal);
+            ps.setString(1, causa_baja);
+            ps.setInt(2, veterinario_id);
+            ps.setInt(3, id_animal);
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
+    public Animal buscarPorId(int id) {
+        String sql = "SELECT * FROM animales WHERE id_animal = ?";
+        try (Connection con = ConexionDB.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Animal a = new Animal();
+                    a.setId(rs.getInt("id_animal"));
+                    a.setNombre(rs.getString("nombre"));
+                    a.setMicrochip(rs.getString("microchip"));
+                    a.setEstado(rs.getString("estado"));
+                    a.setCausaBaja(rs.getString("causa_baja"));
+                    a.setFechaBaja(rs.getString("fecha_baja"));
+                    // Añade el resto de setters según tus columnas...
+                    return a;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Si no lo encuentra, devuelve null
     }
 
     public List<Animal> obtenerSoloBajas() {
