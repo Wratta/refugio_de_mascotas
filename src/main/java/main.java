@@ -1,6 +1,10 @@
 import Dao.AnimalDAO;
+import Dao.UsuarioDAO;
 import model.Animal;
+import model.Rol;
 import model.TipoAnimal;
+import model.Usuario;
+
 import java.util.List;
 import java.util.Scanner;
 import static model.ExportadorXML.generarReporte;
@@ -10,15 +14,45 @@ public class main {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        // 1. Fase de Login
+        System.out.println("--- ACCESO AL SISTEMA ---");
+        System.out.print("Usuario: ");
+        String userStr = scanner.nextLine();
+        System.out.print("Contraseña: ");
+        String passStr = scanner.nextLine();
+
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        Usuario usuarioLogueado = usuarioDAO.login(userStr, passStr);
+
+        if (usuarioLogueado == null) {
+            System.out.println("Credenciales incorrectas. Cerrando aplicación.");
+            return;
+        }
+
+        // 2. Inicio del Menú con el usuario validado
         int opcion = 0;
+        Rol rol = usuarioLogueado.getRol();
 
         do {
             System.out.println("\n--- SISTEMA DE GESTIÓN: PROTECTORA (V2.0) ---");
-            System.out.println("1. Registrar nuevo animal");
+            System.out.println("Bienvenido/a: " + usuarioLogueado.getNombre() + " [" + rol + "]");
+
+            // --- OPCIONES DINÁMICAS (Visualización) ---
+            if (rol != Rol.VOLUNTARIO) {
+                System.out.println("1. Registrar nuevo animal");
+            }
+
             System.out.println("2. Ver lista de animales (Todos)");
             System.out.println("3. Buscar animal por Microchip");
-            System.out.println("4. Registrar Defunción (Baja Veterinaria)");
-            System.out.println("5. Exportar Reporte de Bajas (XML)");
+
+            if (rol != Rol.VOLUNTARIO) { // Corregido: quitado paréntesis extra
+                System.out.println("4. Registrar Defunción (Baja Veterinaria)");
+            }
+
+            if (rol == Rol.DUENO) { // Corregido: quitado paréntesis extra
+                System.out.println("5. Exportar Reporte de Bajas (XML)");
+            }
+
             System.out.println("6. Registrar Adoptante (Fase 2)");
             System.out.println("7. Salir");
             System.out.print("Seleccione una opción: ");
@@ -28,8 +62,12 @@ public class main {
 
                 switch (opcion) {
                     case 1:
-                        registrarAnimal();
-                        break;
+                        if (rol != Rol.VOLUNTARIO) {
+                            registrarAnimal();
+                        } else {
+                            System.out.println("Acceso denegado para Voluntarios.");
+                        }
+                        break; // Corregido: añadido punto y coma
                     case 2:
                         listarAnimales();
                         break;
@@ -37,13 +75,19 @@ public class main {
                         buscarAnimal();
                         break;
                     case 4:
-                        gestionarBaja();
+                        if (rol != Rol.VOLUNTARIO) { // Corregido: estructura de llaves
+                            gestionarBaja();
+                        } else {
+                            System.out.println("Permiso denegado.");
+                        }
                         break;
                     case 5:
-                        System.out.println("Llamando al módulo de Lenguajes de Marcas...");
-                        System.out.println("Generando 'reporte_bajas.xml' mediante JAXB...");
-                        generarReporte();
-                        break;
+                        if (rol == Rol.DUENO) {
+                            generarReporte();
+                        } else {
+                            System.out.println("Acceso denegado. Solo el Dueño tiene permiso.");
+                        }
+                        break; // Corregido: quitado doble punto y coma
                     case 6:
                         System.out.println("Módulo en desarrollo para la Fase 2.");
                         break;
@@ -60,7 +104,6 @@ public class main {
 
         } while (opcion != 7);
     }
-
     private static void registrarAnimal() {
         System.out.println("\n--- NUEVO REGISTRO ---");
         Animal a = new Animal();

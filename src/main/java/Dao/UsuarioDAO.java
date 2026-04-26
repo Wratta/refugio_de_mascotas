@@ -34,4 +34,28 @@ public class UsuarioDAO {
         }
         return null; // Si no hay coincidencia, devuelve null
     }
+    public Usuario login(String user, String pass) {
+        String sql = "SELECT * FROM usuarios WHERE username = ? AND password = ?";
+
+        try (Connection conn = ConexionDB.getConexion();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, user);
+            pstmt.setString(2, pass);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return new Usuario(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("nombre"),
+                        Rol.valueOf(rs.getString("rol").toUpperCase())
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error en login: " + e.getMessage());
+        }
+        return null; // Si no lo encuentra, devuelve null
+    }
 }
