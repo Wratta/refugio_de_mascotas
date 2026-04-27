@@ -1,16 +1,11 @@
-import Dao.AnimalDAO;
-import Dao.VeterinarioDAO;
-import Dao.UsuarioDAO;
-import Dao.AdoptanteDAO;
+import Dao.*;
 import model.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,8 +58,10 @@ public class MainApp {
                 System.out.println("5. Exportar Reporte de Bajas (XML)");
             }
 
-            System.out.println("6. Registrar Adoptante (Fase 2)");
-            System.out.println("7. Salir");
+            System.out.println("6. Registrar Adoptante");
+            System.out.println("7. Ver lista de Adoptantes");
+            System.out.println("8. Asignar Adoptante a Animal");
+            System.out.println("9. Salir");
             System.out.print("Seleccione una opción: ");
 
             try {
@@ -102,6 +99,12 @@ public class MainApp {
                         registrarAdoptante();
                         break;
                     case 7:
+                        listarAdoptantes();
+                        break;
+                    case 8:
+                        asignarAdoptanteAAnimal();
+                        break;
+                    case 9:
                         System.out.println("Saliendo del sistema...");
                         break;
                     default:
@@ -112,7 +115,7 @@ public class MainApp {
                 opcion = 0;
             }
 
-        } while (opcion != 7);
+        } while (opcion != 9);
     }
     private static void registrarAnimal() {
         System.out.println("\n--- NUEVO REGISTRO ---");
@@ -268,5 +271,61 @@ public class MainApp {
         adoptanteDAO.guardar(a);
 
         System.out.println("Adoptante capturado correctamente.");
+    }
+    private static void listarAdoptantes() {
+        List<Adoptante> adoptantes = adoptanteDAO.obtenerTodos();
+        List<Animal> animales = animalDAO.obtenerTodos();
+
+        System.out.println("\n--- LISTADO DE ADOPTANTES Y SUS ANIMALES ---");
+        System.out.printf("%-12s %-15s %-12s %-10s %-15s%n",
+                "DNI", "NOMBRE", "TELEFONO", "ID ANIMAL", "NOMBRE ANIMAL");
+        System.out.println("--------------------------------------------------------------------------------");
+
+        for (Adoptante ad : adoptantes) {
+            String idEncontrado = "---";
+            String nombreEncontrado = "Ninguno";
+
+            // Buscamos en la lista de animales si el id_adoptante coincide con el DNI
+            for (Animal an : animales) {
+                // Importante: an.getid_adoptante() debe devolver el DNI (String)
+                if (ad.getDni().equalsIgnoreCase(an.getIdAdoptante())) {
+                    idEncontrado = String.valueOf(an.getId_animal());
+                    nombreEncontrado = an.getNombre();
+                    break; // Si ya encontramos uno, salimos del bucle interno
+                }
+            }
+
+            System.out.printf("%-12s %-15s %-12s %-10s %-15s%n",
+                    ad.getDni(),
+                    ad.getNombre(),
+                    ad.getTelefono(),
+                    idEncontrado,
+                    nombreEncontrado);
+        }
+    }
+    private static void asignarAdoptanteAAnimal() {
+        try {
+            System.out.println("\n--- ASIGNACION DE ADOPCION ---");
+
+            System.out.print("Introduce el ID del Animal: ");
+            int idAnimal = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("Introduce el DNI del Adoptante: ");
+            String dni = scanner.nextLine();
+
+            // Guardamos el resultado en un booleano para verificarlo
+            boolean exito = animalDAO.asignarAdoptante(idAnimal, dni);
+
+            if (exito) {
+                System.out.println("Resultado: Asignacion de adoptante realizada correctamente.");
+            } else {
+                // El DAO ya imprime sus propios mensajes de error específicos (si no existe, si está fallecido, etc.)
+                System.out.println("Resultado: No se pudo completar la operacion.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: El ID del animal debe ser un numero entero.");
+        } catch (Exception e) {
+            System.out.println("Error inesperado: " + e.getMessage());
+        }
     }
 }

@@ -186,6 +186,65 @@ public class AnimalDAO {
         }
         return lista;
     }
+    public boolean asignarAdoptante(int idAnimal, String dni) {
+        // 1. SQL para verificar que el adoptante existe por su DNI
+        String sqlBuscarAdoptante = "SELECT dni FROM adoptantes WHERE dni = ?";
 
+        // 2. SQL para actualizar el animal (id_adoptante es el nombre de tu columna FK)
+        String sqlUpdateAnimal = "UPDATE animales SET id_adoptante = ?, estado = 'ADOPTADO' WHERE id_animal = ?";
+
+        // 3. SQL para verificar el estado previo del animal
+        String sqlCheckEstado = "SELECT estado FROM animales WHERE id_animal = ?";
+
+        try (Connection conn = ConexionDB.getConexion()) {
+
+            // PASO 1: Verificar estado del animal (No permitir si ha fallecido)
+            try (PreparedStatement psCheck = conn.prepareStatement(sqlCheckEstado)) {
+                psCheck.setInt(1, idAnimal);
+                ResultSet rs = psCheck.executeQuery();
+                if (rs.next()) {
+                    if ("FALLECIDO".equalsIgnoreCase(rs.getString("estado"))) {
+                        System.out.println("Operacion cancelada: El animal con ID " + idAnimal + " esta fallecido.");
+                        return false;
+                    }
+
+                    if ("ADOPTADO".equalsIgnoreCase(rs.getString("estado"))) {
+                        System.out.println("Operacion cancelada: El animal ya ha sido adoptado por otra persona.");
+                        return false;
+                    }
+                } else {
+                    System.out.println("Error: No existe ningun animal con ID " + idAnimal);
+                    return false;
+                }
+            }
+
+            // PASO 2: Verificar que el adoptante existe
+            String dniExistente = null;
+            try (PreparedStatement psAdopt = conn.prepareStatement(sqlBuscarAdoptante)) {
+                psAdopt.setString(1, dni);
+                ResultSet rsA = psAdopt.executeQuery();
+                if (rsA.next()) {
+                    dniExistente = rsA.getString("dni"); // Leemos el DNI como String
+                } else {
+                    System.out.println("Error: No se encontro ningun adoptante con DNI " + dni);
+                    return false;
+                }
+            }
+
+            // PASO 3: Ejecutar la actualizacion final
+            try (PreparedStatement psUp = conn.prepareStatement(sqlUpdateAnimal)) {
+                // USAMOS setString porque el DNI es texto, aunque la columna se llame id_adoptante
+                psUp.setString(1, dniExistente);
+                psUp.setInt(2, idAnimal);
+
+                int filasAfectadas = psUp.executeUpdate();
+                return filasAfectadas > 0;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error SQL en la asignacion: " + e.getMessage());
+            return false;
+        }
+    }
 
 }

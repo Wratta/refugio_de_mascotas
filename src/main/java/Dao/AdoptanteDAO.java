@@ -1,6 +1,8 @@
 package Dao;
 
 import model.Adoptante;
+import model.Animal;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +34,13 @@ public class AdoptanteDAO {
             return false;
         }
     }
-
-    // Método para obtener todos (necesario para el Reporte XML)
     public List<Adoptante> obtenerTodos() {
         List<Adoptante> lista = new ArrayList<>();
         String sql = "SELECT * FROM adoptantes";
 
-        try (Connection conn = DriverManager.getConnection(url, user, pass);
-             Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+        try (Connection conn = ConexionDB.getConexion();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Adoptante a = new Adoptante();
@@ -51,11 +51,13 @@ public class AdoptanteDAO {
                 a.setEmail(rs.getString("email"));
                 a.setCurso_competencias(rs.getBoolean("curso_competencias"));
                 a.setContrato_firmado(rs.getBoolean("contrato_firmado"));
+
                 lista.add(a);
             }
         } catch (SQLException e) {
-            System.err.println("Error al listar adoptantes: " + e.getMessage());
+            System.err.println("Error al obtener la lista de adoptantes: " + e.getMessage());
         }
         return lista;
     }
+
 }
