@@ -18,16 +18,17 @@ import java.time.LocalDate;
         "microchip",
         "peso",
         "esterilizado",
-        "fechaUltimaRabia",
         "especie",
         "raza",
         "fechaIngreso",
+        "fecha_nacimiento",
         "idAdoptante",
         "estado",
         "causaBaja",
         "fechaBaja",
         "vacunasAlDia",
-        "veterinario_id"
+        "veterinario_id",
+        "observaciones_veterinarias"
 })
 public class Animal {
     // 1. Atributos
@@ -36,16 +37,17 @@ public class Animal {
     private String microchip;
     private double peso;
     private boolean esterilizado;
-    private String fechaUltimaRabia;
     private TipoAnimal especie;
     private String raza;
     private String fechaIngreso;
+    private String fecha_nacimiento;
     private String idAdoptante;
     private String estado;
     private String causaBaja;
     private String fechaBaja;
     private boolean vacunasAlDia;
     private int veterinario_id;
+    private String observaciones_veterinarias;
 
     // 3. Constructor para el Controller (El de 3 parámetros)
     public Animal(String nombre, double peso, TipoAnimal especie) {

@@ -1,16 +1,23 @@
-import Dao.AnimalDAO;
-import Dao.UsuarioDAO;
-import model.Animal;
-import model.Rol;
-import model.TipoAnimal;
-import model.Usuario;
+import Dao.*;
+import model.*;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import static model.ExportadorXML.generarReporte;
 
-public class main {
+public class MainApp {
     private static final AnimalDAO animalDAO = new AnimalDAO();
+    private static final AdoptanteDAO adoptanteDAO = new AdoptanteDAO();
+    private static final VeterinarioDAO veterinarioDAO = new VeterinarioDAO();
+    private static final UsuarioDAO usuarioDAO = new UsuarioDAO(); // Añadido aquí
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -89,7 +96,7 @@ public class main {
                         }
                         break; // Corregido: quitado doble punto y coma
                     case 6:
-                        System.out.println("Módulo en desarrollo para la Fase 2.");
+                        registrarAdoptante();
                         break;
                     case 7:
                         System.out.println("Saliendo del sistema...");
@@ -127,7 +134,24 @@ public class main {
         a.setPeso(Double.parseDouble(scanner.nextLine()));
 
         System.out.print("Fecha de Ingreso (AAAA-MM-DD): ");
-        a.setFechaIngreso(scanner.nextLine());
+        String fechaS = scanner.nextLine();
+
+        try {
+            // Intentamos parsear para verificar que sea una fecha real
+            // valueOf lanzará una excepción si el formato no es AAAA-MM-DD o si el día/mes no existe
+            java.sql.Date.valueOf(fechaS);
+
+            // Si llegamos aquí, la fecha es válida. La guardamos como String.
+            a.setFechaIngreso(fechaS);
+
+        } catch (IllegalArgumentException e) {
+            // Si entra aquí, es que la fecha estaba mal escrita
+            System.out.println("Fecha no válida o formato incorrecto. Se asignará la fecha de hoy.");
+
+            // Obtenemos la fecha de hoy en formato AAAA-MM-DD para guardarla como String
+            String hoy = LocalDate.now().toString();
+            a.setFechaIngreso(hoy);
+        }
 
         animalDAO.guardarAnimal(a);
     }
@@ -179,5 +203,65 @@ public class main {
         } else {
             System.out.println("Error: No se pudo actualizar el registro.");
         }
+    }
+    private static void generarReporte() {
+        System.out.println("\n--- Generando Reporte XML Completo ---");
+
+        // El try-with-resources gestiona la conexión
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/refugio_mascotas", "root", "")) {
+
+            if (conn == null) {
+                System.out.println("Error: No se pudo establecer la conexión.");
+                return;
+            }
+
+            Refugio refugio = new Refugio();
+
+            // IntelliJ ya no debería marcar error aquí porque estamos dentro del bloque try que captura SQLException
+            List<Veterinario> vets = veterinarioDAO.obtenerTodos();
+            List<Adoptante> adops = adoptanteDAO.obtenerTodos();
+            List<Animal> anis = animalDAO.obtenerTodos();
+
+            // Verificación de nulidad para silenciar avisos de Inspección
+            refugio.setVeterinarios(vets != null ? vets : new ArrayList<>());
+            refugio.setAdoptantes(adops != null ? adops : new ArrayList<>());
+            refugio.setAnimales(anis != null ? anis : new ArrayList<>());
+
+            // JAXB Marshalling
+            JAXBContext context = JAXBContext.newInstance(Refugio.class);
+            Marshaller ms = context.createMarshaller();
+            ms.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            File f = new File("reporte_refugio.xml");
+            ms.marshal(refugio, f);
+
+            System.out.println("Éxito: Reporte guardado en " + f.getAbsolutePath());
+
+        } catch (SQLException e) {
+            System.err.println("Error de base de datos: " + e.getMessage());
+        } catch (JAXBException e) {
+            System.err.println("Error de configuración JAXB: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error inesperado: " + e.getMessage());
+        }
+    }
+
+    private static void registrarAdoptante() {
+        System.out.println("\n--- Nuevo Registro de Adoptante ---");
+        Adoptante a = new Adoptante();
+
+        System.out.print("DNI: "); a.setDni(scanner.nextLine());
+        System.out.print("Nombre: "); a.setNombre(scanner.nextLine());
+        System.out.print("Apellidos: "); a.setApellidos(scanner.nextLine());
+        System.out.print("Teléfono: "); a.setTelefono(scanner.nextLine());
+        System.out.print("Email: "); a.setEmail(scanner.nextLine());
+
+        a.setCurso_competencias(false);
+        a.setContrato_firmado(false);
+
+
+        adoptanteDAO.guardar(a);
+
+        System.out.println("Adoptante capturado correctamente.");
     }
 }

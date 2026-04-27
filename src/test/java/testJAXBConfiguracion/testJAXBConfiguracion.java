@@ -1,6 +1,7 @@
 package testJAXBConfiguracion;
 
 import model.ExportadorXML;
+import model.Veterinario;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.JAXBContext;
@@ -27,5 +28,16 @@ public class testJAXBConfiguracion {
 
         File archivo = new File("reporte_bajas.xml");
         assertTrue(archivo.exists(), "El archivo XML debería haberse creado.");
+    }
+    @Test
+    public void testVeterinarioToXml() throws Exception {
+        Veterinario v = new Veterinario(7, "Dra. Elena Martínez", "600111222");
+
+        JAXBContext context = JAXBContext.newInstance(Veterinario.class);
+        Marshaller mar = context.createMarshaller();
+        mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+        // Imprime por consola para verificar visualmente
+        mar.marshal(v, System.out);
     }
 }

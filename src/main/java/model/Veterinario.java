@@ -19,11 +19,6 @@ public class Veterinario {
     private String nombre;
     private String telefono;
 
-    public Veterinario(int id_vet, String nombre, String telefono) {
-        this.id_vet = id_vet;
-        this.nombre = nombre;
-        this.telefono = telefono;
-    }
 
     @XmlElement(name = "id_vet")
     public int getId_vet() {

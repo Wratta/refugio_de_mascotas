@@ -1,6 +1,8 @@
 package Dao;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import model.Adoptante;
 import org.junit.jupiter.api.Test;
 import model.Usuario;
 import model.Rol;
@@ -49,4 +51,11 @@ public class UsuarioDAOTest {
         Usuario user = dao.login("admin", "clave_falsa_123");
         assertNull(user, "El login no debe permitir el acceso con clave errónea");
     }
+    @Test
+    public void testValidarDniAdoptante() {
+        Adoptante a = new Adoptante();
+        String dniCorrecto = "12345678Z";
+        assertTrue(dniCorrecto.matches("^[0-9]{8}[A-Z]$"));
+    }
+
 }

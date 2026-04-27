@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gestion_refugio>
+    <lista_veterinarios>
+        <veterinario>
+            <id_vet>3</id_vet>
+            <nombre>Dr. Javier López</nombre>
+            <telefono>600111221</telefono>
+        </veterinario>
+        <veterinario>
+            <id_vet>7</id_vet>
+            <nombre>Dra. Elena Martínez</nombre>
+            <telefono>600111222</telefono>
+        </veterinario>
+    </lista_veterinarios>
+    <lista_adoptantes>
+        <adoptante>
+            <dni>12345678Z</dni>
+            <nombre>Carlos</nombre>
+            <apellidos>García Ruiz</apellidos>
+            <telefono>655999888</telefono>
+            <email>carlos.garcia@email.com</email>
+            <curso_competencias>true</curso_competencias>
+            <contrato_firmado>true</contrato_firmado>
+        </adoptante>
+    </lista_adoptantes>
+</gestion_refugio>
