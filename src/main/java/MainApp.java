@@ -162,21 +162,23 @@ public class MainApp {
     private static void listarAnimales() {
         List<Animal> lista = animalDAO.obtenerTodos();
         System.out.println("\n--- LISTADO DE ANIMALES EN EL REFUGIO ---");
-        // Añadimos la columna ESTADO
-        System.out.printf("%-10s %-15s %-10s %-10s %-12s %-10s%n",
-                "MICROCHIP", "NOMBRE", "ESPECIE", "PESO", "ESTADO", "RACIÓN");
-        System.out.println("---------------------------------------------------------------------------");
+
+        // 1. Ajustamos la cabecera (añadimos ID al principio)
+        System.out.printf("%-5s %-12s %-15s %-10s %-8s %-12s %-10s%n",
+                "ID", "MICROCHIP", "NOMBRE", "ESPECIE", "PESO", "ESTADO", "RACIÓN");
+        System.out.println("---------------------------------------------------------------------------------------");
 
         for (Animal a : lista) {
-            // Usamos un operador ternario para que si el estado es null no rompa el programa
             String estado = (a.getEstado() != null) ? a.getEstado() : "S/D";
 
-            System.out.printf("%-10s %-15s %-10s %-10.2f %-12s %-10.2f kg%n",
+            // 2. Añadimos a.getId_animal() al principio de los argumentos
+            System.out.printf("%-5d %-12s %-15s %-10s %-8.2f %-12s %-10.2f kg%n",
+                    a.getId_animal(),      // Nueva columna ID
                     a.getMicrochip(),
                     a.getNombre(),
                     a.getEspecie(),
                     a.getPeso(),
-                    estado, // <--- Nueva columna visual
+                    estado,
                     a.calcularRacionDiaria());
         }
     }
@@ -195,13 +197,13 @@ public class MainApp {
     private static void gestionarBaja() {
         System.out.println("\n--- REGISTRO MÉDICO DE BAJA ---");
         System.out.print("ID del Animal: ");
-        int id = Integer.parseInt(scanner.nextLine());
+        int id_animal = Integer.parseInt(scanner.nextLine());
         System.out.print("Causa del fallecimiento: ");
         String causa = scanner.nextLine();
         System.out.print("ID del Veterinario: ");
-        int idVet = Integer.parseInt(scanner.nextLine());
+        int Veterinario_id = Integer.parseInt(scanner.nextLine());
 
-        if (animalDAO.registrarDefuncion(id, causa, idVet)) {
+        if (animalDAO.registrarDefuncion(id_animal, causa, Veterinario_id)) {
             System.out.println("Operación completada. El animal ha sido dado de baja.");
         } else {
             System.out.println("Error: No se pudo actualizar el registro.");
