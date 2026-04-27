@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="ProyectoRefugio">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Metadata" type="tipoMetadata"/>
+                <xs:element name="Personal" type="tipoPersonal"/>
+                <xs:element name="Adoptantes" type="tipoAdoptantes"/>
+                <xs:element name="Animales" type="tipoAnimalesInventario"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="tipoMetadata">
+        <xs:sequence>
+            <xs:element name="versionSGE" type="xs:string"/>
+            <xs:element name="ultimaExportacion" type="xs:dateTime"/>
+            <xs:element name="centro" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="tipoPersonal">
+        <xs:sequence>
+            <xs:element name="veterinario" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id_vet" type="xs:int"/>
+                        <xs:element name="nombre" type="xs:string"/>
+                        <xs:element name="telefono" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="tipoAdoptantes">
+        <xs:sequence>
+            <xs:element name="adoptante" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="nombre" type="xs:string"/>
+                        <xs:element name="dni">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:pattern value="[0-9]{8}[A-Z]"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="email" type="xs:string"/>
+                        <xs:element name="direccion" type="xs:string"/>
+                        <xs:element name="telefono" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="tipoAnimalesInventario">
+        <xs:sequence>
+            <xs:element name="animal" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id_animal" type="xs:int"/>
+                        <xs:element name="nombre" type="xs:string"/>
+                        <xs:element name="microchip" type="xs:string" minOccurs="0"/>
+                        <xs:element name="peso" type="xs:double"/>
+                        <xs:element name="esterilizado" type="xs:boolean"/>
+                        <xs:element name="especie" type="xs:string" minOccurs="0"/>
+                        <xs:element name="raza" type="xs:string" minOccurs="0"/>
+                        <xs:element name="fechaIngreso" type="xs:string" minOccurs="0"/>
+                        <xs:element name="idAdoptante" type="xs:string" minOccurs="0"/>
+                        <xs:element name="estado" type="xs:string" minOccurs="0"/>
+                        <xs:element name="causaBaja" type="xs:string" minOccurs="0"/>
+                        <xs:element name="fechaBaja" type="xs:string" minOccurs="0"/>
+                        <xs:element name="vacunasAlDia" type="xs:boolean"/>
+                        <xs:element name="veterinario_id" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

@@ -1,15 +1,17 @@
 CREATE DATABASE IF NOT EXISTS refugio_mascotas;
 USE refugio_mascotas;
 
--- 1. Tabla de Adoptantes (Primero esta, porque Animales depende de ella)
+-- 1. Tabla de Adoptantes (Primero esta, porque Animales depende de ella)(Con requisitos Ley 2023)
 CREATE TABLE adoptantes (
-    dni VARCHAR(12) PRIMARY KEY,
+    dni VARCHAR(9) PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     apellidos VARCHAR(100) NOT NULL,
+    direccion TEXT,
     telefono VARCHAR(15),
     email VARCHAR(100),
     curso_competencias BOOLEAN DEFAULT FALSE, -- Requisito Ley 2023
     contrato_firmado BOOLEAN DEFAULT FALSE
+    CONSTRAINT check_dni_format CHECK (dni REGEXP '^[0-9]{8}[A-Z]$')
 );
 
 -- 2. Tabla de Animales
@@ -115,3 +117,37 @@ VALUES ('Thor', 'Perro', 'Boxer', '2025-05-20', 'FALLECIDO', 'Parvovirus severo 
 -- 3. Insertar una baja por vejez
 INSERT INTO animales (nombre, especie, raza, fecha_ingreso, estado, causa_baja, fecha_baja, veterinario_id) 
 VALUES ('Luna', 'Gato', 'Común Europeo', '2020-02-10', 'FALLECIDO', 'Paro cardíaco por edad avanzada (18 años)', '2026-04-22', 1);
+
+--11. Creamos la tabla de Veterinarios
+CREATE TABLE veterinarios (
+    id_vet INT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    telefono VARCHAR(20)
+);
+
+--Insertamos los datos ficticios que hemos creado en el XML y XSD
+-- Insertar Personal Veterinario
+INSERT INTO veterinarios (id_vet, nombre, telefono) VALUES 
+(3, 'Dr. Javier López', '600111221'),
+(7, 'Dra. Elena Martínez', '600111222');
+
+-- Insertar Clientes / Adoptantes
+INSERT INTO adoptantes (nombre, apellidos, dni, email, direccion, telefono, curso_competencias, contrato_firmado) 
+VALUES ('Carlos', 'García Ruiz', '12345678Z', 'carlos.garcia@email.com', 'Calle Mayor 15, Madrid', '655999888', TRUE, TRUE);
+
+-- Insertar Animales
+INSERT INTO animales (
+    id_animal, nombre, microchip, peso, esterilizado, 
+    especie, raza, fecha_ingreso, 
+    estado, causa_baja, fecha_baja, 
+    vacunas_al_dia, veterinario_id
+) VALUES 
+(101, 'Luna', '985121000123456', 12.5, TRUE, 
+ '2025-10-15', 'Perro', 'Border Collie', 
+ '12345678Z', 'Adoptado', 'Proceso de adopción finalizado satisfactoriamente', '2026-03-20', 
+ TRUE, 7),
+
+(204, 'Bigotes', '985121000987654', 4.2, TRUE, 
+ 'Gato', 'Común Europeo', '2023-11-12', 
+ NULL, 'Fallecido', 'Edad avanzada', '2026-04-01', 
+ TRUE, 3);

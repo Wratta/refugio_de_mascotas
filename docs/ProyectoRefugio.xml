@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ProyectoRefugio xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="refugio.xsd">
+
+    <Metadata>
+        <versionSGE>1.0.0</versionSGE>
+        <ultimaExportacion>2026-04-27T19:00:00</ultimaExportacion>
+        <centro>Refugio Canino-Felino "Huellas Felices"</centro>
+    </Metadata>
+
+    <Personal>
+        <veterinario>
+            <id_vet>3</id_vet>
+            <nombre>Dr. Javier López</nombre>
+            <telefono>600111221</telefono>
+        </veterinario>
+        <veterinario>
+            <id_vet>7</id_vet>
+            <nombre>Dra. Elena Martínez</nombre>
+            <telefono>600111222</telefono>
+        </veterinario>
+    </Personal>
+
+    <Adoptantes>
+        <adoptante>
+            <nombre>Carlos García Ruiz</nombre>
+            <dni>12345678Z</dni>
+            <email>carlos.garcia@email.com</email>
+            <direccion>Calle Mayor 15, Madrid</direccion>
+            <telefono>655999888</telefono>
+        </adoptante>
+    </Adoptantes>
+
+    <Animales>
+        <animal>
+            <id_animal>101</id_animal>
+            <nombre>Luna</nombre>
+            <microchip>985121000123456</microchip>
+            <peso>12.5</peso>
+            <esterilizado>true</esterilizado>
+            <especie>Perro</especie>
+            <raza>Border Collie</raza>
+            <fechaIngreso>2025-01-10</fechaIngreso>
+            <dni>12345678Z</dni>
+            <estado>Adoptado</estado>
+            <causaBaja>Proceso de adopción finalizado satisfactoriamente</causaBaja>
+            <fechaBaja>2026-03-20</fechaBaja>
+            <vacunasAlDia>true</vacunasAlDia>
+            <veterinario_id>7</veterinario_id>
+        </animal>
+
+        <animal>
+            <id_animal>204</id_animal>
+            <nombre>Bigotes</nombre>
+            <microchip>985121000987654</microchip>
+            <peso>4.2</peso>
+            <esterilizado>true</esterilizado>
+            <especie>Gato</especie>
+            <raza>Común Europeo</raza>
+            <fechaIngreso>2023-11-12</fechaIngreso>
+            <idAdoptante xsi:nil="true"/> <estado>Fallecido</estado>
+            <causaBaja>Edad avanzada</causaBaja>
+            <fechaBaja>2026-04-01</fechaBaja>
+            <vacunasAlDia>true</vacunasAlDia>
+            <veterinario_id>3</veterinario_id>
+        </animal>
+    </Animales>
+
+</ProyectoRefugio>
