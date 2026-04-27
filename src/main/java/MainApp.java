@@ -1,4 +1,7 @@
-import Dao.*;
+import Dao.AnimalDAO;
+import Dao.VeterinarioDAO;
+import Dao.UsuarioDAO;
+import Dao.AdoptanteDAO;
 import model.*;
 
 import javax.xml.bind.JAXBContext;
