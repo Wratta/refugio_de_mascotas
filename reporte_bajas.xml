@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<reporteBajas>
+<ReporteBajas>
+    <animal>
+        <id_animal>1</id_animal>
+        <nombre>Tobby</nombre>
+        <peso>0.0</peso>
+        <esterilizado>false</esterilizado>
+        <especie>PERRO</especie>
+        <causaBaja>Fallo multiorgánico</causaBaja>
+        <fechaBaja>2026-04-27</fechaBaja>
+        <vacunasAlDia>false</vacunasAlDia>
+        <veterinario_id>0</veterinario_id>
+    </animal>
     <animal>
         <id_animal>5</id_animal>
         <nombre>Thor</nombre>
@@ -9,6 +20,7 @@
         <causaBaja>Parvovirus severo - Fallo multiorgánico</causaBaja>
         <fechaBaja>2026-04-15</fechaBaja>
         <vacunasAlDia>false</vacunasAlDia>
+        <veterinario_id>0</veterinario_id>
     </animal>
     <animal>
         <id_animal>6</id_animal>
@@ -19,5 +31,6 @@
         <causaBaja>Paro cardíaco por edad avanzada (18 años)</causaBaja>
         <fechaBaja>2026-04-22</fechaBaja>
         <vacunasAlDia>false</vacunasAlDia>
+        <veterinario_id>0</veterinario_id>
     </animal>
-</reporteBajas>
+</ReporteBajas>

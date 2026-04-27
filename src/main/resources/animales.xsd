@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:annotation>
+        <xs:documentation>
+            Esquema de validación para el reporte de bajas de animales del refugio.
+            Define la estructura técnica y el orden obligatorio de los elementos.
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:element name="ReporteBajas">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="animal" maxOccurs="unbounded" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Entidad que representa a un animal que ha causado baja en el sistema.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="id_animal" type="xs:int">
+                                <xs:annotation>
+                                    <xs:documentation>Identificador único interno de la base de datos.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                            <xs:element name="nombre" type="xs:string">
+                                <xs:annotation>
+                                    <xs:documentation>Nombre de pila del animal.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                            <xs:element name="microchip" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Código identificativo del microchip (15 dígitos habitualmente).</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                            <xs:element name="peso" type="xs:double">
+                                <xs:annotation>
+                                    <xs:documentation>Peso en kilogramos registrado en el momento de la baja.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                            <xs:element name="esterilizado" type="xs:boolean">
+                                <xs:annotation>
+                                    <xs:documentation>Indica si el animal ha pasado por el proceso de esterilización.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                            <xs:element name="fechaUltimaRabia" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Fecha de la última vacuna de la rabia recibida.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                            <xs:element name="especie" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Tipo de animal (Perro, Gato, etc.). Proviene del Enum TipoAnimal.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                            <xs:element name="raza" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Raza específica del animal, si se conoce.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                            <xs:element name="fechaIngreso" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Fecha en la que el animal entró originalmente al refugio.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                            <xs:element name="idAdoptante" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Referencia al adoptante si la baja es por adopción.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                            <xs:element name="estado" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Estado actual del animal antes del cierre del registro.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                            <xs:element name="causaBaja" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Motivo detallado de la baja (Defunción, Adopción, Traslado).</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                            <xs:element name="fechaBaja" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Fecha efectiva de salida del sistema.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                            <xs:element name="vacunasAlDia" type="xs:boolean">
+                                <xs:annotation>
+                                    <xs:documentation>Booleano que confirma si el calendario de vacunación está completo.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                            <xs:element name="veterinario_id" type="xs:int">
+                                <xs:annotation>
+                                    <xs:documentation>ID del veterinario responsable que firma la baja.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

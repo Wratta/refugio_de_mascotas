@@ -1,24 +1,17 @@
 package model;
 
 import Dao.AnimalDAO;
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.URL;
 import java.util.List;
 
 public class ExportadorXML {
-
-    // Necesitamos esta clase interna para que el XML tenga una etiqueta raíz <reporte>
-    @XmlRootElement(name = "ReporteBajas")
-    private static class ReporteWrapper {
-        private List<Animal> animales;
-
-        @XmlElement(name = "animal")
-        public List<Animal> getAnimales() { return animales; }
-        public void setAnimales(List<Animal> animales) { this.animales = animales; }
-    }
 
     public static void generarReporte() {
         AnimalDAO dao = new AnimalDAO();
@@ -30,23 +23,36 @@ public class ExportadorXML {
         }
 
         try {
-            // AQUÍ USAMOS TU CLASE: Metemos la lista de animales en el contenedor
+            // 1. Preparamos el contenedor de datos
             ReporteBajas reporte = new ReporteBajas(bajas);
 
-            // Configuramos JAXB para que reconozca tu clase ReporteBajas
+            // 2. Cargamos el archivo XSD
+            SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            URL xsdURL = ExportadorXML.class.getClassLoader().getResource("animales.xsd");
+            if (xsdURL == null) {
+                throw new FileNotFoundException("No se encontró el archivo animales.xsd en resources");
+            }
+            Schema miEsquema = sf.newSchema(xsdURL);
+
+            // 3. Configuramos JAXB
             JAXBContext context = JAXBContext.newInstance(ReporteBajas.class);
             Marshaller marshaller = context.createMarshaller();
 
+            // Vincular el XSD con el Marshaller
+            marshaller.setSchema(miEsquema);
+
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-            // Guardamos el archivo
+            // 4. Guardar el archivo
             File archivo = new File("reporte_bajas.xml");
             marshaller.marshal(reporte, archivo);
 
-            System.out.println("¡Reporte generado con éxito!");
+            System.out.println("¡Reporte generado y VALIDADO con éxito!");
 
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            // Si el XML no cumple con el XSD, el error saltará aquí
+            System.out.println("Error en la exportación o validación: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

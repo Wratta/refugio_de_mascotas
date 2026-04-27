@@ -12,7 +12,23 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @XmlRootElement(name = "animal")
 @XmlAccessorType(XmlAccessType.FIELD)
-// Definimos el orden para que el XML sea idéntico al XSD de Lenguajes de Marcas
+@XmlType(propOrder = {
+        "id_animal",
+        "nombre",
+        "microchip",
+        "peso",
+        "esterilizado",
+        "fechaUltimaRabia",
+        "especie",
+        "raza",
+        "fechaIngreso",
+        "idAdoptante",
+        "estado",
+        "causaBaja",
+        "fechaBaja",
+        "vacunasAlDia",
+        "veterinario_id"
+})
 public class Animal {
     // 1. Atributos
     private int id_animal;
@@ -20,16 +36,16 @@ public class Animal {
     private String microchip;
     private double peso;
     private boolean esterilizado;
-    private String fechaUltimaRabia; // Antes era LocalDate, pero da un conflicto con Java 8+
+    private String fechaUltimaRabia;
     private TipoAnimal especie;
-    private String raza; // <--- Añadimos esta línea
-    private String fechaIngreso; // Antes era LocalDate, pero da un conflicto con Java 8+
+    private String raza;
+    private String fechaIngreso;
     private String idAdoptante;
-    private String estado; // ACTIVO, FALLECIDO, ADOPTADO
-    private String causaBaja; // Solo para fallecidos
-    private String fechaBaja;  // Solo para fallecidos
+    private String estado;
+    private String causaBaja;
+    private String fechaBaja;
     private boolean vacunasAlDia;
-    private int idVeterinario;
+    private int veterinario_id;
 
     // 3. Constructor para el Controller (El de 3 parámetros)
     public Animal(String nombre, double peso, TipoAnimal especie) {

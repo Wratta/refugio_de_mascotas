@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@XmlRootElement(name = "reporteBajas")
+@XmlRootElement(name = "ReporteBajas")
 @XmlAccessorType(XmlAccessType.FIELD) // <--- ESTA LÍNEA ES LA QUE QUITA LOS 2 ERRORES
 public class ReporteBajas {
 
