@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
         String pass = request.getParameter("password");
 
         // 2. Validar con la base de datos
-        Usuario usuario = usuarioDAO.validar(user, pass);
+        Usuario usuario = usuarioDAO.login(user, pass);
 
         response.setContentType("application/json");
         Map<String, Object> resultado = new HashMap<>();
